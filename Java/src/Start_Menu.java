@@ -14,12 +14,6 @@ public class Start_Menu extends JPanel implements KeyListener {
     private Font messageFont;
     private boolean showUnderscore = true; // Flag to toggle underscore visibility
 
-    // Default positions and sizes
-    private final double defaultMessageX = 945.3;
-    private final double defaultMessageY = 597.2;
-    private final int defaultWidth = 1920;
-    private final int defaultHeight = 1080;
-
     // Constructor
     public Start_Menu() {
         try {
@@ -78,7 +72,9 @@ public class Start_Menu extends JPanel implements KeyListener {
             g.fillRect(0, 0, getWidth(), getHeight());
         }
 
-        // Draw the title image
+        // Title image
+        int defaultWidth = 1920;
+        int defaultHeight = 1080;
         if (titleImage != null) {
             int titleWidth = titleImage.getWidth(this);
             int titleHeight = titleImage.getHeight(this);
@@ -90,21 +86,23 @@ public class Start_Menu extends JPanel implements KeyListener {
             g.drawImage(titleImage, x, y, scaledWidth, scaledHeight, this);
         }
 
-        // Draw the "Press Enter" message
+        // "Press Enter" message
         g.setFont(messageFont.deriveFont((float) (getWidth() * 0.0125))); // Scale font size
         g.setColor(Color.WHITE);
         String message = "Press Enter" + (showUnderscore ? "_" : "");
-        FontMetrics fm = g.getFontMetrics();
-        int messageWidth = fm.stringWidth(message);
         double scaleX = getWidth() / (double) defaultWidth;
         double scaleY = getHeight() / (double) defaultHeight;
+        // Default positions and sizes
+        double defaultMessageX = 945.3;
         int messageX = (int) (defaultMessageX * scaleX);
+        double defaultMessageY = 597.2;
         int messageY = (int) (defaultMessageY * scaleY);
         g.drawString(message, messageX, messageY);
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
+
     }
 
     // KeyListener
@@ -117,31 +115,12 @@ public class Start_Menu extends JPanel implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
+
     }
+
 
     // Start getter
     public boolean getStart() {
         return start;
-    }
-
-    // Main method
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Start Menu");
-        Start_Menu start_menu = new Start_Menu();
-        frame.add(start_menu);
-        frame.setSize(1920, 1080);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-        start_menu.requestFocusInWindow();
-
-        // Wait for Enter key to be pressed
-        while (!start_menu.getStart()) {
-            try {
-                Thread.sleep(100); // CPU sleep
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        System.out.println("Enter pressed");
     }
 }
