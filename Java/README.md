@@ -8,4 +8,9 @@ The main character, Kara Sajess, after finding disturbing element on the main so
 the heart crystals, she will search for more information to find the truth.
 
 ## DataBase Information
+All int are unsigned if needed
+
 **Levels.Collisions**: matrix of boolean of 16x9
+**Proofs.Prf_Type**: An unsigned int that indicates how the proof is retreive (0: interact button; 
+1: via the scanner item; 2: not define)
+**Item_Types.ItmTp_Max_Count**: if null, consider infinite
