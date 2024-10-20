@@ -9,26 +9,27 @@ import java.net.URL;
 
 public class Start_Menu extends JPanel implements KeyListener {
     private Image start_menu; // Image displayed
+    private Image titleImage; // Title image
     private boolean start = false; // Start flag
-    private Font titleFont;
     private Font messageFont;
     private boolean showUnderscore = true; // Flag to toggle underscore visibility
+
+    // Default positions and sizes
+    private final double defaultMessageX = 945.3;
+    private final double defaultMessageY = 597.2;
+    private final int defaultWidth = 1920;
+    private final int defaultHeight = 1080;
 
     // Constructor
     public Start_Menu() {
         try {
-            // Load the image
+            // Load the start menu image
             URL imgURL = new URL("https://github.com/LeBN/Gamies/raw/main/Assets/Levels/Start_Menu.png");
             start_menu = new ImageIcon(imgURL).getImage(); // URL to image
 
-            // Load the title font
-            try {
-                URL titleFontURL = new URL("https://raw.githubusercontent.com/LeBN/Gamies/main/Assets/Fonts/Saved%20by%20Zero%20Rg.otf");
-                InputStream titleFontStream = titleFontURL.openStream();
-                titleFont = Font.createFont(Font.TRUETYPE_FONT, titleFontStream).deriveFont(83.5f);
-            } catch (FontFormatException e) {
-                titleFont = new Font("Serif", Font.BOLD, 83);
-            }
+            // Load the title image
+            URL titleImageURL = new URL("https://github.com/LeBN/Gamies/raw/main/Assets/UI/Title.png");
+            titleImage = new ImageIcon(titleImageURL).getImage(); // URL to image
 
             // Load the message font
             try {
@@ -42,7 +43,7 @@ public class Start_Menu extends JPanel implements KeyListener {
         } catch (Exception e) {
             // Error Handle
             start_menu = null;
-            titleFont = new Font("Serif", Font.BOLD, 83);
+            titleImage = null;
             messageFont = new Font("Serif", Font.PLAIN, 24);
             e.printStackTrace();
         }
@@ -77,19 +78,29 @@ public class Start_Menu extends JPanel implements KeyListener {
             g.fillRect(0, 0, getWidth(), getHeight());
         }
 
-        // Draw the title
-        g.setFont(titleFont);
-        g.setColor(new Color(0xc175ff));
-        FontMetrics fm = g.getFontMetrics(titleFont);
-        int titleWidth = fm.stringWidth("Purple Heart");
-        int x = (getWidth() - titleWidth) / 2;
-        g.drawString("Purple Heart", x, (int) 407.3);
+        // Draw the title image
+        if (titleImage != null) {
+            int titleWidth = titleImage.getWidth(this);
+            int titleHeight = titleImage.getHeight(this);
+            double scaleFactor = Math.min(getWidth() / (double) defaultWidth, getHeight() / (double) defaultHeight);
+            int scaledWidth = (int) (titleWidth * scaleFactor);
+            int scaledHeight = (int) (titleHeight * scaleFactor);
+            int x = (getWidth() - scaledWidth) / 2;
+            int y = (getHeight() - scaledHeight) / 2 - 50; // Center vertically, adjust y as needed
+            g.drawImage(titleImage, x, y, scaledWidth, scaledHeight, this);
+        }
 
         // Draw the "Press Enter" message
-        g.setFont(messageFont);
+        g.setFont(messageFont.deriveFont((float) (getWidth() * 0.0125))); // Scale font size
         g.setColor(Color.WHITE);
         String message = "Press Enter" + (showUnderscore ? "_" : "");
-        g.drawString(message, (int) 945.3, (int) 597.2);
+        FontMetrics fm = g.getFontMetrics();
+        int messageWidth = fm.stringWidth(message);
+        double scaleX = getWidth() / (double) defaultWidth;
+        double scaleY = getHeight() / (double) defaultHeight;
+        int messageX = (int) (defaultMessageX * scaleX);
+        int messageY = (int) (defaultMessageY * scaleY);
+        g.drawString(message, messageX, messageY);
     }
 
     @Override
