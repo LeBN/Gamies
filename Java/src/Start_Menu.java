@@ -131,6 +131,6 @@ public class Start_Menu extends JPanel implements KeyListener {
                 e.printStackTrace();
             }
         }
-        System.out.println("Start Menu Closed");
+        System.out.println("Enter pressed");
     }
 }
