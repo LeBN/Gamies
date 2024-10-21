@@ -30,24 +30,29 @@ public class Main_Menu extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        int width = getWidth();
+        int height = getHeight();
+
         if (start_menu != null) {
             // Image drawing
-            g.drawImage(start_menu, 0, 0, getWidth(), getHeight(), this);
-            g.setColor(new Color(0, 0, 0, 145)); // 45% opacity
-            g.fillRect(0, 0, getWidth(), getHeight());
+            g.drawImage(start_menu, 0, 0, width, height, this);
+            g.setColor(new Color(0, 0, 0, 105)); // 5% opacity
+            g.fillRect(0, 0, width, height);
         } else {
             // Image not load error
             g.setColor(Color.RED);
-            g.fillRect(0, 0, getWidth(), getHeight());
+            g.fillRect(0, 0, width, height);
         }
 
         // Draw the title image at the specified Y-coordinate and centered
         if (titleImage != null) {
-            int titleWidth = titleImage.getWidth(this);
-            int titleHeight = titleImage.getHeight(this);
-            int titleX = (getWidth() - titleWidth) / 2;
-            double scaleY = getHeight() / 1080.0;
-            int titleY = (int) (950 * scaleY) - titleHeight / 2; // Adjusted Y-coordinate
+            int originalTitleWidth = titleImage.getWidth(this);
+            int originalTitleHeight = titleImage.getHeight(this);
+            double scale = Math.min(width / 1920.0, height / 1080.0);
+            int titleWidth = (int) (originalTitleWidth * scale);
+            int titleHeight = (int) (originalTitleHeight * scale);
+            int titleX = (width - titleWidth) / 2;
+            int titleY = (int) (950 * (height / 1080.0)) - titleHeight / 2; // Adjusted Y-coordinate to keep the title at the same position
             g.drawImage(titleImage, titleX, titleY, titleWidth, titleHeight, this);
         }
     }
