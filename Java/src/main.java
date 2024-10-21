@@ -19,12 +19,11 @@ public class main {
             }
         }
 
-        // Enter key pressed, switch to Main_Menu
+        // Enter key pressed, switch to Options_Menu
         System.out.println("Enter Pressed");
         switchToMainMenu(frame);
     }
-
-    // Function to switch from Start_Menu to Main_Menu
+// function to switch from Start_Menu to Main_Menu
     public static void switchToMainMenu(JFrame frame) {
         // Remove the Start_Menu
         frame.getContentPane().removeAll();
@@ -39,5 +38,22 @@ public class main {
 
         // Request focus for key events in Main_Menu if needed
         main_menu.requestFocusInWindow();
+    }
+
+    // Function to switch from Start_Menu to Options_Menu
+    public static void switchToOptionsMenu(JFrame frame) {
+        // Remove the Start_Menu
+        frame.getContentPane().removeAll();
+
+        // Add the Options_Menu, passing the frame to the constructor
+        Options_Menu options_menu = new Options_Menu(frame); // Pass frame as argument
+        frame.add(options_menu);
+
+        // Refresh the frame
+        frame.revalidate();
+        frame.repaint();
+
+        // Request focus for key events in Options_Menu if needed
+        options_menu.requestFocusInWindow();
     }
 }
