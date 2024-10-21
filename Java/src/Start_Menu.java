@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.InputStream;
@@ -13,9 +11,11 @@ public class Start_Menu extends JPanel implements KeyListener {
     private boolean start = false; // Start flag
     private Font messageFont;
     private boolean showUnderscore = true; // Flag to toggle underscore visibility
+    private JFrame frame;
 
     // Constructor
-    public Start_Menu() {
+    public Start_Menu(JFrame frame) {
+        this.frame = frame;
         try {
             // Load the start menu image
             URL imgURL = new URL("https://github.com/LeBN/Gamies/raw/main/Assets/Levels/Start_Menu.png");
@@ -26,13 +26,9 @@ public class Start_Menu extends JPanel implements KeyListener {
             titleImage = new ImageIcon(titleImageURL).getImage(); // URL to image
 
             // Load the message font
-            try {
-                URL messageFontURL = new URL("https://raw.githubusercontent.com/LeBN/Gamies/main/Assets/Fonts/PressStart2P.ttf");
-                InputStream messageFontStream = messageFontURL.openStream();
-                messageFont = Font.createFont(Font.TRUETYPE_FONT, messageFontStream).deriveFont(24f);
-            } catch (FontFormatException e) {
-                messageFont = new Font("Serif", Font.PLAIN, 24);
-            }
+            URL messageFontURL = new URL("https://raw.githubusercontent.com/LeBN/Gamies/main/Assets/Fonts/PressStart2P.ttf");
+            InputStream messageFontStream = messageFontURL.openStream();
+            messageFont = Font.createFont(Font.TRUETYPE_FONT, messageFontStream).deriveFont(24f);
 
         } catch (Exception e) {
             // Error Handle
@@ -47,12 +43,9 @@ public class Start_Menu extends JPanel implements KeyListener {
         requestFocusInWindow();
 
         // Timer to toggle underscore visibility
-        Timer timer = new Timer(500, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showUnderscore = !showUnderscore;
-                repaint();
-            }
+        Timer timer = new Timer(500, e -> {
+            showUnderscore = !showUnderscore;
+            repaint();
         });
         timer.start();
     }
@@ -101,26 +94,16 @@ public class Start_Menu extends JPanel implements KeyListener {
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
+    public void keyTyped(KeyEvent e) {}
 
     // KeyListener
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-            start = true;
+            main.switchToMainMenu(frame);
         }
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
-
-
-    // Start getter
-    public boolean getStart() {
-        return start;
-    }
+    public void keyReleased(KeyEvent e) {}
 }

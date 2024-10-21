@@ -6,9 +6,12 @@ import java.net.URL;
 public class Main_Menu extends JPanel {
     private Image start_menu; // Image displayed
     private Image titleImage; // Title image
+    private Font buttonFont; // Font for the buttons
+    private JFrame frame;
 
     // Constructor
-    public Main_Menu() {
+    public Main_Menu(JFrame frame) {
+        this.frame = frame;
         try {
             // Load the start menu image
             URL imgURL = new URL("https://github.com/LeBN/Gamies/raw/main/Assets/Levels/Start_Menu.png");
@@ -18,12 +21,70 @@ public class Main_Menu extends JPanel {
             URL titleImageURL = new URL("https://github.com/LeBN/Gamies/raw/main/Assets/UI/Title.png");
             titleImage = new ImageIcon(titleImageURL).getImage(); // URL to image
 
+            // Load the button font
+            URL fontURL = new URL("https://raw.githubusercontent.com/LeBN/Gamies/main/Assets/Fonts/PressStart2P.ttf");
+            InputStream fontStream = fontURL.openStream();
+            buttonFont = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(21f); // Set font size to 21
+
+            // Load button images and resize
+            Image buttonImage = new ImageIcon(new URL("https://github.com/LeBN/Gamies/raw/main/Assets/UI/UI_Menu_Quit_Button.png")).getImage();
+            Image buttonIconQuit = buttonImage.getScaledInstance(520, 138, Image.SCALE_SMOOTH);
+            Image buttonIcon = buttonImage.getScaledInstance(825, 138, Image.SCALE_SMOOTH);
+
+            // Create the QUIT button
+            JButton quitButton = new JButton("Quit", new ImageIcon(buttonIconQuit));
+            quitButton.setFont(buttonFont);
+            quitButton.setBounds((1920 - 520) / 2, 4, 520, 138);
+            styleButton(quitButton);
+            quitButton.addActionListener(e -> System.exit(0));
+
+            // Create the Credits button
+            JButton creditsButton = new JButton("Credits", new ImageIcon(buttonIcon));
+            creditsButton.setFont(buttonFont);
+            creditsButton.setBounds((1920 - 825) / 2, 126, 825, 138);
+            styleButton(creditsButton);
+            creditsButton.addActionListener(e -> System.out.println("Credits clicked"));
+
+            // Create the Options button
+            JButton optionsButton = new JButton("Options", new ImageIcon(buttonIcon));
+            optionsButton.setFont(buttonFont);
+            optionsButton.setBounds((1920 - 825) / 2, 248, 825, 138);
+            styleButton(optionsButton);
+            optionsButton.addActionListener(e -> switchToOptionsMenu());
+
+            // Create the Start Game button
+            JButton startGameButton = new JButton("Start Game", new ImageIcon(buttonIcon));
+            startGameButton.setFont(buttonFont);
+            startGameButton.setBounds((1920 - 825) / 2, 365, 825, 138);
+            styleButton(startGameButton);
+            startGameButton.addActionListener(e -> System.out.println("Start clicked"));
+
+            // Set layout to null for absolute positioning
+            setLayout(null);
+
+            // Add buttons to the panel
+            add(quitButton);
+            add(creditsButton);
+            add(optionsButton);
+            add(startGameButton);
+
         } catch (Exception e) {
             // Error Handle
             start_menu = null;
             titleImage = null;
             e.printStackTrace();
         }
+    }
+
+    // Method to style buttons
+    private void styleButton(JButton button) {
+        button.setBorderPainted(false);
+        button.setContentAreaFilled(false);
+        button.setFocusPainted(false);
+        button.setOpaque(false);
+        button.setHorizontalTextPosition(SwingConstants.CENTER);
+        button.setVerticalTextPosition(SwingConstants.CENTER);
+        button.setForeground(Color.WHITE);
     }
 
     // Paint the image and text on the JPanel
@@ -57,10 +118,30 @@ public class Main_Menu extends JPanel {
         }
     }
 
+    // Method to switch to the Options Menu
+    private void switchToOptionsMenu() {
+        frame.getContentPane().removeAll();
+        Options_Menu options_menu = new Options_Menu(frame);
+        frame.add(options_menu);
+        frame.revalidate();
+        frame.repaint();
+        options_menu.requestFocusInWindow();
+    }
+
+    // Method to switch to the Main Menu
+    public static void switchToMainMenu(JFrame frame) {
+        frame.getContentPane().removeAll();
+        Main_Menu main_menu = new Main_Menu(frame);
+        frame.add(main_menu);
+        frame.revalidate();
+        frame.repaint();
+        main_menu.requestFocusInWindow();
+    }
+
     // Main method
     public static void main(String[] args) {
         JFrame frame = new JFrame("Main Menu");
-        Main_Menu main_menu = new Main_Menu();
+        Main_Menu main_menu = new Main_Menu(frame);
         frame.add(main_menu);
         frame.setSize(1920, 1080);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

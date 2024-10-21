@@ -140,7 +140,7 @@ public class Options_Menu extends JPanel {
             crossButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    switchToMainMenu(frame);
+                    Main_Menu.switchToMainMenu(frame);
                 }
             });
 
@@ -299,11 +299,6 @@ public class Options_Menu extends JPanel {
 
     // Function to switch to Main_Menu
     private void switchToMainMenu(JFrame frame) {
-        frame.getContentPane().removeAll();
-        Main_Menu main_menu = new Main_Menu();
-        frame.add(main_menu);
-        frame.revalidate();
-        frame.repaint();
-        main_menu.requestFocusInWindow();
+        Main_Menu.switchToMainMenu(frame);
     }
 }
