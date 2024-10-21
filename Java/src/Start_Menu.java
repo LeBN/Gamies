@@ -8,9 +8,8 @@ import java.net.URL;
 public class Start_Menu extends JPanel implements KeyListener {
     private Image start_menu; // Image displayed
     private Image titleImage; // Title image
-    private boolean start = false; // Start flag
     private Font messageFont;
-    private boolean showUnderscore = true; // Flag to toggle underscore visibility
+    private boolean showUnderscore = true; // Toggle underscore visibility
     private JFrame frame;
 
     // Constructor
@@ -106,4 +105,14 @@ public class Start_Menu extends JPanel implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {}
+
+    // Main method
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Start Menu");
+        Start_Menu startMenu = new Start_Menu(frame);
+        frame.add(startMenu);
+        frame.setSize(1920, 1080);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
 }

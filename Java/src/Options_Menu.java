@@ -2,8 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
+import java.util.Properties;
 
 public class Options_Menu extends JPanel {
     private Image start_menu; // Background image
@@ -16,9 +17,38 @@ public class Options_Menu extends JPanel {
     private JSlider volumeSlider; // Volume slider
     private JSlider effectsSlider; // Effects slider
 
+    private void loadOptions() {
+        Properties properties = new Properties();
+        try (InputStream input = new FileInputStream("options.txt")) {
+            properties.load(input);
+            isFullscreenOn = Boolean.parseBoolean(properties.getProperty("fullscreen", "false"));
+            volumeSlider.setValue(Integer.parseInt(properties.getProperty("volume", "50")));
+            effectsSlider.setValue(Integer.parseInt(properties.getProperty("sound_effect", "50")));
+            fullscreenButton.setText(isFullscreenOn ? "ON" : "OFF");
+            setFullscreen(isFullscreenOn);
+        } catch (IOException e) {
+            // Fichier non trouvé ou erreur lors de la lecture
+            System.err.println("Failed to load options: " + e.getMessage());
+        }
+    }
+
+    private void saveOptions() {
+        Properties properties = new Properties();
+        properties.setProperty("fullscreen", Boolean.toString(isFullscreenOn));
+        properties.setProperty("volume", Integer.toString(volumeSlider.getValue()));
+        properties.setProperty("sound_effect", Integer.toString(effectsSlider.getValue()));
+        try (OutputStream output = new FileOutputStream("options.txt")) {
+            properties.store(output, null);
+        } catch (IOException e) {
+            // Erreur lors de la sauvegarde
+            System.err.println("Failed to save options: " + e.getMessage());
+        }
+    }
     // Constructor
+// Constructor
     public Options_Menu(JFrame frame) {
         this.frame = frame;
+
         try {
             // Load the start menu image
             URL imgURL = new URL("https://github.com/LeBN/Gamies/raw/main/Assets/Levels/Start_Menu.png");
@@ -140,6 +170,7 @@ public class Options_Menu extends JPanel {
             crossButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
+                    saveOptions(); // Sauvegarder les options avant de quitter
                     Main_Menu.switchToMainMenu(frame);
                 }
             });
@@ -163,6 +194,8 @@ public class Options_Menu extends JPanel {
             add(effectsLeftArrow);
             add(effectsRightArrow);
             add(crossButton);
+
+            loadOptions(); // Load options from file after initializing components
 
         } catch (Exception e) {
             // Error Handle
