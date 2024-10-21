@@ -25,12 +25,12 @@ public class Options_Menu extends JPanel {
             volumeSlider.setValue(Integer.parseInt(properties.getProperty("volume", "50")));
             effectsSlider.setValue(Integer.parseInt(properties.getProperty("sound_effect", "50")));
             fullscreenButton.setText(isFullscreenOn ? "ON" : "OFF");
-            setFullscreen(isFullscreenOn);
+            // Retire l'appel à setFullscreen ici
         } catch (IOException e) {
-            // Fichier non trouvé ou erreur lors de la lecture
             System.err.println("Failed to load options: " + e.getMessage());
         }
     }
+
 
     private void saveOptions() {
         Properties properties = new Properties();
