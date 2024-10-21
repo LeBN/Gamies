@@ -8,12 +8,12 @@ import java.util.Properties;
 
 public class Options_Menu extends JPanel {
     private Image start_menu; // Background image
-    private Image optionsBGPanel; // Center panel background image
+    private Image optionsBGPanel; // Panel background image
     private Image subtitleBack; // Subtitle background image
     private Font subtitleFont; // Font for the subtitle
     private JButton fullscreenButton; // Fullscreen toggle button
     private boolean isFullscreenOn = false; // Fullscreen state
-    private JFrame frame; // Reference to the frame
+    private JFrame frame;
     private JSlider volumeSlider; // Volume slider
     private JSlider effectsSlider; // Effects slider
 
@@ -25,7 +25,6 @@ public class Options_Menu extends JPanel {
             volumeSlider.setValue(Integer.parseInt(properties.getProperty("volume", "50")));
             effectsSlider.setValue(Integer.parseInt(properties.getProperty("sound_effect", "50")));
             fullscreenButton.setText(isFullscreenOn ? "ON" : "OFF");
-            // Retire l'appel à setFullscreen ici
         } catch (IOException e) {
             System.err.println("Failed to load options: " + e.getMessage());
         }
@@ -40,39 +39,38 @@ public class Options_Menu extends JPanel {
         try (OutputStream output = new FileOutputStream("options.txt")) {
             properties.store(output, null);
         } catch (IOException e) {
-            // Erreur lors de la sauvegarde
+            // Error Handle
             System.err.println("Failed to save options: " + e.getMessage());
         }
     }
     // Constructor
-// Constructor
     public Options_Menu(JFrame frame) {
         this.frame = frame;
 
         try {
-            // Load the start menu image
+            // Start menu background image
             URL imgURL = new URL("https://github.com/LeBN/Gamies/raw/main/Assets/Levels/Start_Menu.png");
             start_menu = new ImageIcon(imgURL).getImage(); // URL to image
 
-            // Load the options background panel image
+            // Options menu background image
             URL optionsBGPanelURL = new URL("https://github.com/LeBN/Gamies/raw/main/Assets/UI/options_BG_panel.png");
             optionsBGPanel = new ImageIcon(optionsBGPanelURL).getImage(); // URL to image
 
-            // Load the subtitle background image
+            // Subtitle background image
             URL subtitleBackURL = new URL("https://github.com/LeBN/Gamies/raw/main/Assets/UI/UI_Subtitle_Back_Longer.png");
             subtitleBack = new ImageIcon(subtitleBackURL).getImage(); // URL to image
 
-            // Load the subtitle font
+            // Subtitle font
             URL fontURL = new URL("https://raw.githubusercontent.com/LeBN/Gamies/main/Assets/Fonts/PressStart2P.ttf");
             InputStream fontStream = fontURL.openStream();
             subtitleFont = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(21f); // Set font size to 21
             Font buttonFont = subtitleFont.deriveFont(15f); // Set font size to 15 for the button
 
-            // Load button image and resize to 99x99
+            // Button image
             Image buttonImage = new ImageIcon(new URL("https://github.com/LeBN/Gamies/raw/main/Assets/UI/UI_Button_Off_Released.png")).getImage();
             Image buttonIcon = buttonImage.getScaledInstance(99, 99, Image.SCALE_SMOOTH);
 
-            // Create the fullscreen button
+            // Fullscreen toggle button
             fullscreenButton = new JButton("OFF", new ImageIcon(buttonIcon));
             fullscreenButton.setBorderPainted(false);
             fullscreenButton.setContentAreaFilled(false);
@@ -84,7 +82,7 @@ public class Options_Menu extends JPanel {
             fullscreenButton.setHorizontalTextPosition(SwingConstants.CENTER); // Center text horizontally
             fullscreenButton.setVerticalTextPosition(SwingConstants.CENTER); // Center text vertically
 
-            // Add mouse listener to handle button state changes
+            // Mouse listener full screen
             fullscreenButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
@@ -108,7 +106,7 @@ public class Options_Menu extends JPanel {
             effectsSlider = createSlider(sliderBackImage, sliderFrontImage);
             effectsSlider.setBounds(1352, 459, 264, 81); // Position the effects slider
 
-            // Create labels for "Fullscreen", "Volume", and "Sound Effect" text and dashes
+            // Create labels for the options
             JLabel fullscreenLabel = new JLabel("Fullscreen");
             fullscreenLabel.setFont(subtitleFont);
             fullscreenLabel.setForeground(Color.WHITE);
@@ -155,7 +153,7 @@ public class Options_Menu extends JPanel {
             Image crossImage = new ImageIcon(new URL("https://github.com/LeBN/Gamies/raw/main/Assets/UI/UI_Cross.png")).getImage();
             Image crossIcon = crossImage.getScaledInstance(48, 42, Image.SCALE_SMOOTH);
 
-            // Create the cross button with the button image and cross image
+            // Create the cross button
             JButton crossButton = new JButton(new ImageIcon(buttonIcon));
             crossButton.setBorderPainted(false);
             crossButton.setContentAreaFilled(false);
@@ -170,12 +168,12 @@ public class Options_Menu extends JPanel {
             crossButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    saveOptions(); // Sauvegarder les options avant de quitter
+                    saveOptions(); // Save options to file
                     Main_Menu.switchToMainMenu(frame);
                 }
             });
 
-            // Set layout to null for absolute positioning
+
             setLayout(null);
 
             // Add components to the panel
@@ -195,7 +193,7 @@ public class Options_Menu extends JPanel {
             add(effectsRightArrow);
             add(crossButton);
 
-            loadOptions(); // Load options from file after initializing components
+            loadOptions(); // Load options from file
 
         } catch (Exception e) {
             // Error Handle
@@ -207,7 +205,7 @@ public class Options_Menu extends JPanel {
         }
     }
 
-    // Method to create a custom slider
+    // Custom slider creation method
     private JSlider createSlider(Image backImage, Image frontImage) {
         JSlider slider = new JSlider() {
             @Override
@@ -246,7 +244,7 @@ public class Options_Menu extends JPanel {
         return arrowButton;
     }
 
-    // Paint the images and text on the JPanel
+    // Paint on the JPanel
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -273,7 +271,7 @@ public class Options_Menu extends JPanel {
             int panelY = (height - panelHeight) / 2;
             g.drawImage(optionsBGPanel, panelX, panelY, panelWidth, panelHeight, this);
 
-            // Draw the subtitle background image at the specified coordinates relative to the panel
+            // Draw the subtitle background
             if (subtitleBack != null) {
                 int subtitleWidth = 313;
                 int subtitleHeight = 122;
@@ -284,7 +282,7 @@ public class Options_Menu extends JPanel {
                 int subtitleY = panelY + (int) (77 * subtitleScale) + 20; // Lower the subtitle by 20 pixels
                 g.drawImage(subtitleBack, subtitleX, subtitleY, subtitleWidth, subtitleHeight, this);
 
-                // Draw the "Options" text centered on the subtitle background
+                // Draw the "Options" text
                 g.setFont(subtitleFont.deriveFont((float) (26 * subtitleScale)));
                 g.setColor(Color.decode("#262b44")); // Set color to #262b44
                 FontMetrics fm = g.getFontMetrics();
@@ -293,7 +291,7 @@ public class Options_Menu extends JPanel {
                 int textX = subtitleX + (subtitleWidth - textWidth) / 2;
                 int textY = subtitleY + (subtitleHeight + textHeight) / 2 - fm.getDescent();
 
-                // Adjust text position if it goes out of the frame
+                // Adjust text position
                 if (textX < 0 || textX + textWidth > width) {
                     textX = Math.max(0, Math.min(textX, width - textWidth));
                 }
@@ -303,7 +301,7 @@ public class Options_Menu extends JPanel {
         }
     }
 
-    // Method to set fullscreen mode
+    // Fullscreen method
     private void setFullscreen(boolean fullscreen) {
         GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         if (fullscreen) {
@@ -317,21 +315,5 @@ public class Options_Menu extends JPanel {
             frame.setUndecorated(false);
             frame.setVisible(true);
         }
-    }
-
-    // Main method (Debug à retirer)
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Options Menu");
-        Options_Menu options_menu = new Options_Menu(frame);
-        frame.add(options_menu);
-        frame.setSize(1920, 1080);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-        options_menu.requestFocusInWindow();
-    }
-
-    // Function to switch to Main_Menu
-    private void switchToMainMenu(JFrame frame) {
-        Main_Menu.switchToMainMenu(frame);
     }
 }

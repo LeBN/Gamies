@@ -9,7 +9,7 @@ public class Start_Menu extends JPanel implements KeyListener {
     private Image start_menu; // Image displayed
     private Image titleImage; // Title image
     private Font messageFont;
-    private boolean showUnderscore = true; // Toggle underscore visibility
+    private boolean showUnderscore = true; // Underscore visibility
     private JFrame frame;
 
     // Constructor
@@ -41,7 +41,7 @@ public class Start_Menu extends JPanel implements KeyListener {
         setFocusable(true);
         requestFocusInWindow();
 
-        // Timer to toggle underscore visibility
+        // Timer underscore animation
         Timer timer = new Timer(500, e -> {
             showUnderscore = !showUnderscore;
             repaint();

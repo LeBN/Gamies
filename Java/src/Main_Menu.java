@@ -9,9 +9,9 @@ public class Main_Menu extends JPanel {
     private Image titleImage; // Title image
     private Font buttonFont; // Font for the buttons
     private JFrame frame;
-    private int selectedButtonIndex = 0; // Index for tracking the selected button
-    private JButton[] buttons; // Array to hold the buttons
-    private Image selectionCrystal; // Image for selection crystal
+    private int selectedButtonIndex = 0; //Index of the selected button
+    private JButton[] buttons; // Buttons array
+    private Image selectionCrystal; // selection crystal image
 
     // Constructor
     public Main_Menu(JFrame frame) {
@@ -39,7 +39,7 @@ public class Main_Menu extends JPanel {
             URL crystalURL = new URL("https://github.com/LeBN/Gamies/raw/main/Assets/UI/selection_crystal.png");
             selectionCrystal = new ImageIcon(crystalURL).getImage().getScaledInstance(49, 93, Image.SCALE_SMOOTH);
 
-            // Create the buttons and add them to an array for easy access
+            // Create the buttons array
             buttons = new JButton[4];
 
             // Create the QUIT button
@@ -82,7 +82,7 @@ public class Main_Menu extends JPanel {
                 add(button);
             }
 
-            // Add MouseListener for hover effects
+            // MouseListener hover effect
             for (int i = 0; i < buttons.length; i++) {
                 final int index = i; // For the lambda expression
                 buttons[i].addMouseListener(new MouseAdapter() {
@@ -94,14 +94,14 @@ public class Main_Menu extends JPanel {
 
                     @Override
                     public void mouseExited(MouseEvent e) {
-                        // Optional: reset the selection when the mouse exits the button
-                        // selectedButtonIndex = 0; // Uncomment this if you want to reset to "Quit"
+                        // Delete the selection when mouse exits
+                        selectedButtonIndex = -1;
                         repaint();
                     }
                 });
             }
 
-            // Add KeyListener for navigation
+            // Arrow key navigation
             setFocusable(true);
             addKeyListener(new KeyAdapter() {
                 @Override
@@ -118,7 +118,7 @@ public class Main_Menu extends JPanel {
                 }
             });
 
-            repaint(); // Call repaint here to show the initial selection
+            repaint();
 
         } catch (Exception e) {
             // Error Handle
@@ -128,7 +128,7 @@ public class Main_Menu extends JPanel {
         }
     }
 
-    // Method to style buttons
+    // Style the buttons
     private void styleButton(JButton button) {
         button.setBorderPainted(false);
         button.setContentAreaFilled(false);
@@ -169,7 +169,7 @@ public class Main_Menu extends JPanel {
             g.drawImage(titleImage, titleX, titleY, titleWidth, titleHeight, this);
         }
 
-        // Draw the selection crystals based on the selected button
+        // Draw the selection crystal
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -193,7 +193,7 @@ public class Main_Menu extends JPanel {
         }
     }
 
-    // Method to draw the selection crystal with rotation
+    // Method to draw the selection crystal
     private void drawCrystal(Graphics2D g2d, double x, double y, int angle) {
         g2d.translate(x, y);
         g2d.rotate(Math.toRadians(angle));
@@ -202,7 +202,7 @@ public class Main_Menu extends JPanel {
         g2d.translate(-x, -y); // Reset translation
     }
 
-    // Method to switch to the Options Menu
+    // Options menu switch
     private void switchToOptionsMenu() {
         frame.getContentPane().removeAll();
         Options_Menu options_menu = new Options_Menu(frame);
@@ -212,7 +212,7 @@ public class Main_Menu extends JPanel {
         options_menu.requestFocusInWindow();
     }
 
-    // Method to switch to the Main Menu
+    // Main menu switch
     public static void switchToMainMenu(JFrame frame) {
         frame.getContentPane().removeAll();
         Main_Menu main_menu = new Main_Menu(frame);

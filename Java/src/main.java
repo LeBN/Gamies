@@ -5,8 +5,8 @@ import java.io.IOException;
 
 public class main {
     private static boolean fullscreen = false;
-    private static int volume = 63; // Valeur par défaut
-    private static int soundEffect = 70; // Valeur par défaut
+    private static int volume = 50; // Default value
+    private static int soundEffect = 50; // Default value
 
     public static void loadSettings() {
         try (BufferedReader reader = new BufferedReader(new FileReader("options.txt"))) {
@@ -21,21 +21,21 @@ public class main {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace(); // Gérer l'erreur de lecture
+            e.printStackTrace(); // Error handling
         }
     }
 
     public static void switchToMainMenu(JFrame frame) {
         frame.getContentPane().removeAll();
-        Main_Menu mainMenu = new Main_Menu(frame); // Assurez-vous que Main_Menu est votre classe de menu principal
+        Main_Menu mainMenu = new Main_Menu(frame); // New instance of Main_Menu
         frame.add(mainMenu);
         frame.revalidate();
         frame.repaint();
-        mainMenu.requestFocusInWindow(); // Mettre le focus sur le nouveau menu
+        mainMenu.requestFocusInWindow(); // Focus for key events
     }
 
     public static void main(String[] args) {
-        loadSettings(); // Charger les paramètres dès le démarrage
+        loadSettings(); // Load settings from file
 
         JFrame frame = new JFrame("Start Menu");
         Start_Menu startMenu = new Start_Menu(frame);
@@ -43,14 +43,14 @@ public class main {
         frame.setSize(1920, 1080);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-        startMenu.requestFocusInWindow(); // Demander le focus pour les événements de touche
+        startMenu.requestFocusInWindow(); // Focus for key events
 
-        // Passer en plein écran si nécessaire
+        //
         if (fullscreen) {
-            frame.dispose(); // Fermer la fenêtre actuelle
-            frame.setUndecorated(true); // Supprimer les bordures
-            frame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximiser la fenêtre
-            frame.setVisible(true); // Afficher à nouveau la fenêtre
+            frame.dispose(); // Close the window
+            frame.setUndecorated(true); // Remove window decorations
+            frame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Fullscreen
+            frame.setVisible(true); // Show the window
         }
     }
 }
