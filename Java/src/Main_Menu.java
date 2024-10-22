@@ -223,22 +223,11 @@ public class Main_Menu extends JPanel {
     }
 
     public void switchToCredits() {
-        JFrame creditsFrame = new JFrame("Credits");
-        creditsFrame.add(new Credits(creditsFrame));
-        creditsFrame.setSize(1920, 1080);
-        creditsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Ferme uniquement la fenêtre des crédits
-        creditsFrame.setVisible(true);
-    }
-
-
-    // Main method
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Main Menu");
-        Main_Menu mainMenu = new Main_Menu(frame);
-        frame.add(mainMenu);
-        frame.setSize(1920, 1080);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-        mainMenu.requestFocusInWindow();
+        frame.getContentPane().removeAll();
+        Credits credits = new Credits(frame);
+        frame.add(credits);
+        frame.revalidate();
+        frame.repaint();
+        credits.requestFocusInWindow();
     }
 }

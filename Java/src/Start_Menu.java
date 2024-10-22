@@ -105,14 +105,4 @@ public class Start_Menu extends JPanel implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {}
-
-    // Main method
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Start Menu");
-        Start_Menu startMenu = new Start_Menu(frame);
-        frame.add(startMenu);
-        frame.setSize(1920, 1080);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-    }
 }
