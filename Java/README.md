@@ -14,3 +14,4 @@ All int are unsigned if needed
 **Proofs.Prf_Type**: An unsigned int that indicates how the proof is retreive (0: interact button; 
 1: via the scanner item; 2: not define)
 **Item_Types.ItmTp_Max_Count**: if null, consider infinite
+**Monologs.Mnlg_Next_Mnlg_Id**: if null, stop the monolog
