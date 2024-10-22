@@ -1,0 +1,4 @@
+#Mon Oct 21 23:50:26 CEST 2024
+fullscreen=false
+sound_effect=0
+volume=46

@@ -55,7 +55,7 @@ public class Main_Menu extends JPanel {
             creditsButton.setFont(buttonFont);
             creditsButton.setBounds((1920 - 825) / 2, 126, 825, 138);
             styleButton(creditsButton);
-            creditsButton.addActionListener(e -> System.out.println("Credits clicked"));
+            creditsButton.addActionListener(e -> switchToCredits());
             buttons[1] = creditsButton; // Add to the array
 
             // Create the Options button
@@ -222,14 +222,12 @@ public class Main_Menu extends JPanel {
         main_menu.requestFocusInWindow();
     }
 
-    // Main method
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Main Menu");
-        Main_Menu mainMenu = new Main_Menu(frame);
-        frame.add(mainMenu);
-        frame.setSize(1920, 1080);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-        mainMenu.requestFocusInWindow();
+    public void switchToCredits() {
+        frame.getContentPane().removeAll();
+        Credits credits = new Credits(frame);
+        frame.add(credits);
+        frame.revalidate();
+        frame.repaint();
+        credits.requestFocusInWindow();
     }
 }
