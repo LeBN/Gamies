@@ -145,18 +145,22 @@ public class Main_Menu extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g; // Keep this line
+
+        // Disable anti-aliasing for images
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); // Ensure text anti-aliasing
+
         int width = getWidth();
         int height = getHeight();
 
         if (start_menu != null) {
-            // Image drawing
-            g.drawImage(start_menu, 0, 0, width, height, this);
-            g.setColor(new Color(0, 0, 0, 105)); // 5% opacity
-            g.fillRect(0, 0, width, height);
+            g2d.drawImage(start_menu, 0, 0, width, height, this);
+            g2d.setColor(new Color(0, 0, 0, 105)); // 5% opacity
+            g2d.fillRect(0, 0, width, height);
         } else {
-            // Image not load error
-            g.setColor(Color.RED);
-            g.fillRect(0, 0, width, height);
+            g2d.setColor(Color.RED);
+            g2d.fillRect(0, 0, width, height);
         }
 
         // Draw the title image
@@ -168,32 +172,30 @@ public class Main_Menu extends JPanel {
             int titleHeight = (int) (originalTitleHeight * scale);
             int titleX = (width - titleWidth) / 2;
             int titleY = (int) (950 * (height / 1080.0)) - titleHeight / 2;
-            g.drawImage(titleImage, titleX, titleY, titleWidth, titleHeight, this);
+            g2d.drawImage(titleImage, titleX, titleY, titleWidth, titleHeight, this);
         }
 
-        // Draw the selection crystal
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
+        // Draw the selection crystals
         switch (selectedButtonIndex) {
             case 0: // Quit
-                drawCrystal(g2d, 700, 70, 90);   // Right crystal
-                drawCrystal(g2d, 1200, 70, -90);  // Left crystal
+                drawCrystal(g2d, 700, 70, 90);
+                drawCrystal(g2d, 1200, 70, -90);
                 break;
             case 1: // Credits
-                drawCrystal(g2d, 620, 195, 90);   // Right crystal
-                drawCrystal(g2d, 1300, 195, -90);  // Left crystal
+                drawCrystal(g2d, 620, 195, 90);
+                drawCrystal(g2d, 1300, 195, -90);
                 break;
             case 2: // Options
-                drawCrystal(g2d, 620, 315, 90);   // Right crystal
-                drawCrystal(g2d, 1300, 315, -90);  // Left crystal
+                drawCrystal(g2d, 620, 315, 90);
+                drawCrystal(g2d, 1300, 315, -90);
                 break;
             case 3: // Start Game
-                drawCrystal(g2d, 620, 435, 90);   // Right crystal
-                drawCrystal(g2d, 1300, 435, -90);  // Left crystal
+                drawCrystal(g2d, 620, 435, 90);
+                drawCrystal(g2d, 1300, 435, -90);
                 break;
         }
     }
+
 
     // Method to draw the selection crystal
     private void drawCrystal(Graphics2D g2d, double x, double y, int angle) {
