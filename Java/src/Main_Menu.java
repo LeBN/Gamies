@@ -106,10 +106,10 @@ public class Main_Menu extends JPanel {
             addKeyListener(new KeyAdapter() {
                 @Override
                 public void keyPressed(KeyEvent e) {
-                    if (e.getKeyCode() == KeyEvent.VK_UP) {
+                    if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
                         selectedButtonIndex = (selectedButtonIndex - 1 + buttons.length) % buttons.length;
                         repaint();
-                    } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                    } else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
                         selectedButtonIndex = (selectedButtonIndex + 1) % buttons.length;
                         repaint();
                     } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -117,7 +117,6 @@ public class Main_Menu extends JPanel {
                     }
                 }
             });
-
             repaint();
 
         } catch (Exception e) {

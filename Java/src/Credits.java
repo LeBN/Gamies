@@ -134,7 +134,7 @@ public class Credits extends JPanel {
         g.drawString("Creators:", 256, 272); // Position for "Creators"
 
         // Draw creators' names with increased line spacing
-        int creatorsY = 312; // Augmenter l'espacement ici
+        int creatorsY = 312; // Increase spacing here
         g.drawString("Gaël Floquet - Efrei Paris - UCI DCE Student", 256, creatorsY);
         creatorsY += 40; // Move down for next line
         g.drawString("Natis Beaurepère - Efrei Paris - UCI DCE Student", 256, creatorsY);
@@ -147,6 +147,10 @@ public class Credits extends JPanel {
         g.drawString("Sources:", 256, creatorsY);
         g.drawString("Images by Midjourney (Midjourney.com)", 256, creatorsY + 30);
         g.drawString("Game assets from Itch (itch.io)", 256, creatorsY + 60);
+
+        // Add new sources
+        g.drawString("Pixelarium Interface by LukeThePolice", 256, creatorsY + 90);
+        g.drawString("Free Cyberpunk Resource Pixel Icons by Free Game Assets", 256, creatorsY + 120);
 
         // Underline "Creators" and "Sources"
         drawUnderline(g, "Creators:", 256, 272);
