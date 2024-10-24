@@ -74,7 +74,7 @@ public class Main_Menu extends JPanel {
             startGameButton.setFont(buttonFont);
             startGameButton.setBounds((1920 - 825) / 2, 365, 825, 138);
             styleButton(startGameButton);
-            startGameButton.addActionListener(e -> System.out.println("Start clicked"));
+            startGameButton.addActionListener(e -> switchToGame((frame)));
             buttons[3] = startGameButton; // Add to the array
 
             // Set layout to null for absolute positioning
@@ -149,7 +149,8 @@ public class Main_Menu extends JPanel {
 
         // Disable anti-aliasing for images
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); // Ensure text anti-aliasing
+        // Ensure text anti-aliasing
+        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         int width = getWidth();
         int height = getHeight();
@@ -219,7 +220,6 @@ public class Main_Menu extends JPanel {
 
     // Main menu switch
     public static void switchToMainMenu(JFrame frame) {
-        displayLoadingPage(frame);
         frame.getContentPane().removeAll();
         Main_Menu main_menu = new Main_Menu(frame);
         frame.add(main_menu);
@@ -229,13 +229,13 @@ public class Main_Menu extends JPanel {
     }
 
     public static void switchToGame(JFrame frame) {
-        displayLoadingPage(frame);
-        frame.getContentPane().removeAll();
-        Game game = new Game(frame);
-        frame.add(game);
-        frame.revalidate();
-        frame.repaint();
-        game.requestFocusInWindow();
+        displayLoadingPage(frame); // Show loading screen
+        frame.getContentPane().removeAll(); // Clear previous content
+        Game game = new Game(frame); // Create the Game instance
+        frame.add(game); // Add the Game panel to the frame
+        frame.revalidate(); // Revalidate the layout
+        frame.repaint(); // Repaint to ensure it's drawn
+        game.requestFocusInWindow(); // Ensure focus is on the game
     }
 
     public static void displayLoadingPage(JFrame frame) {
@@ -243,12 +243,11 @@ public class Main_Menu extends JPanel {
         LoadingPage loadingPage = new LoadingPage(frame, 0);
         frame.add(loadingPage);
         frame.revalidate();
-        frame.repaint();
+        loadingPage.repaint();
         loadingPage.requestFocusInWindow();
     }
 
     public void switchToCredits() {
-        displayLoadingPage(frame);
         frame.getContentPane().removeAll();
         Credits credits = new Credits(frame);
         frame.add(credits);

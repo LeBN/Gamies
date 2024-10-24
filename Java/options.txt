@@ -1,0 +1,6 @@
+#Thu Oct 24 01:52:03 PDT 2024
+fps_limit=60
+fullscreen=true
+show_collision=false
+sound_effect=50
+volume=42

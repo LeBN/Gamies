@@ -4,16 +4,20 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseEvent;
 
 public class Collisions extends JPanel {
-    private double playerX, playerY, playerRadius = 30;  // Circle player properties
+    private double playerX = 100, playerY = 100, playerRadius = 30;  // Circle player properties
     private List<Polygon> obstacles = new ArrayList<>();  // Obstacles list
     private int playerSpeed = 5;  // Player movement speed
     private Vector2D playerMovement = new Vector2D(); // Player movement
     private int up=0, down=0, left=0, right=0;
+    private int mouseX = 0; // Variable to store the mouse X position
+    private int mouseY = 0; // Variable to store the mouse Y position
     private double friction = 0.75;
 
-    public Collisions(Frame frame) {
+    public Collisions(Frame frame){
         obstacles.add(new Polygon(
                 new int[]{400, 500, 450},
                 new int[]{300, 300, 200},
@@ -39,6 +43,21 @@ public class Collisions extends JPanel {
                 setPlayerMovement(e.getKeyCode(), false);
             }
         });
+
+        // Mouse motion listener to track mouse movements
+        addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                mouseX = e.getX();
+                mouseY = e.getY();
+            }
+        });
+
+        setFocusable(true); // Make sure the panel can be focused
+        requestFocusInWindow(); // Request focus for this panel
+
+
+        setOpaque(false);
 
         // Repaint the screen regularly
         Timer timer = new Timer(16, e -> {
@@ -103,15 +122,25 @@ public class Collisions extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         // Draw the player (circle)
-        g2d.setColor(Color.BLUE);
+        g2d.setColor(new Color(0, 0, 255, 100));
         g2d.fillOval((int) (playerX - playerRadius), (int) (playerY - playerRadius), (int) (playerRadius * 2),
                 (int) (playerRadius * 2));
 
         // Draw obstacles
-        g2d.setColor(Color.RED);
+        g2d.setColor(new Color(100, 0, 0, 100));
         for (Polygon obstacle : obstacles) {
             g2d.fill(obstacle);
         }
+
+        // Set color and font for displaying mouse position
+        g2d.setColor(Color.WHITE); // Set text color
+        g2d.setFont(new Font("Arial", Font.PLAIN, 50)); // Set font style and size
+
+        // Draw the mouse position in the bottom right corner
+        String mousePositionText = "Mouse: (" + mouseX + ", " + mouseY + ")";
+        FontMetrics metrics = g2d.getFontMetrics();
+        int textWidth = metrics.stringWidth(mousePositionText);
+        g2d.drawString(mousePositionText, getWidth() - textWidth - 10, getHeight() - 10);
     }
 
     // Resolve the collision by sliding the player along the surface
