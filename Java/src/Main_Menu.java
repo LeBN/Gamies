@@ -11,7 +11,7 @@ public class Main_Menu extends JPanel {
     private JFrame frame;
     private int selectedButtonIndex = 3; //Index of the selected button
     private JButton[] buttons; // Buttons array
-    private Image selectionCrystal; // selection crystal image
+    private Image selectionCrystal; // Selection crystal image
 
     // Constructor
     public Main_Menu(JFrame frame) {
