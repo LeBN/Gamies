@@ -43,7 +43,6 @@ public class Options_Menu extends JPanel {
         }
     }
 
-
     private void saveOptions() {
         Properties properties = new Properties();
         properties.setProperty("fullscreen", Boolean.toString(isFullscreenOn));

@@ -6,18 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Collisions extends JPanel {
-    private double playerX = 100, playerY = 100, playerRadius = 30;  // Circle player properties
+    private double playerX, playerY, playerRadius = 30;  // Circle player properties
     private List<Polygon> obstacles = new ArrayList<>();  // Obstacles list
     private int playerSpeed = 5;  // Player movement speed
     private Vector2D playerMovement = new Vector2D(); // Player movement
     private int up=0, down=0, left=0, right=0;
     private double friction = 0.75;
-    private double piOver2 = Math.PI/2;
-    private double pi3Over2 = (Math.PI*3)/2;
-    private Vector2D toCollision = new Vector2D();
 
-    public Collisions() {
-        // Example obstacle: Triangle
+    public Collisions(Frame frame) {
         obstacles.add(new Polygon(
                 new int[]{400, 500, 450},
                 new int[]{300, 300, 200},
@@ -96,7 +92,7 @@ public class Collisions extends JPanel {
             playerX -= moveX;
             playerY -= moveY;
         } else if (numberOfCollisions != 0) {
-            resolveCollisionWithSliding(collisions.get(0), playerMovement);
+            resolveCollisionWithSliding(collisions.getFirst(), playerMovement);
         }
     }
 
@@ -122,7 +118,7 @@ public class Collisions extends JPanel {
     private void resolveCollisionWithSliding(Polygon polygon, Vector2D move) {
         // Get the closest edge to the player that caused the collision or the information that 2 or more edges
         // are in collision with the player
-        int closestEdgeIndex = getClosestEdgeToCircle(polygon, playerX, playerY, playerRadius, true);
+        int closestEdgeIndex = getClosestEdgeToCircle(polygon, playerX, playerY, playerRadius);
 
         if (closestEdgeIndex != -1) {
             double x1 = polygon.xpoints[closestEdgeIndex];
@@ -241,8 +237,7 @@ public class Collisions extends JPanel {
     }
 
     // Get the closest edge to the circle's center and return -1 if 2 or more edges are at the same distance
-    private int getClosestEdgeToCircle(Polygon polygon, double circleX, double circleY, double circleR,
-                                       boolean isPlayer) {
+    private int getClosestEdgeToCircle(Polygon polygon, double circleX, double circleY, double circleR) {
         int closestEdgeIndex = 0;
         double[] distances = new double[polygon.npoints];
         double closestDistance = Double.MAX_VALUE;
@@ -254,7 +249,7 @@ public class Collisions extends JPanel {
             int y2 = polygon.ypoints[(i + 1) % polygon.npoints];
 
             // Calculate the distance from the circle's center to the edge
-            double distance = pointToLineDistance(circleX, circleY, x1, y1, x2, y2, isPlayer);
+            double distance = pointToLineDistance(circleX, circleY, x1, y1, x2, y2);
             distances[i] = distance;
             if (distance < closestDistance) {
                 closestDistance = distance;
@@ -272,7 +267,7 @@ public class Collisions extends JPanel {
     }
 
     // Helper function to calculate distance from a point to a line segment
-    private double pointToLineDistance(double px, double py, double x1, double y1, double x2, double y2, boolean toC) {
+    private double pointToLineDistance(double px, double py, double x1, double y1, double x2, double y2) {
         double lengthSquared = Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2);
         if (lengthSquared == 0) return Math.sqrt(Math.pow(px - x1, 2) + Math.pow(py - y1, 2));
 
@@ -281,17 +276,13 @@ public class Collisions extends JPanel {
 
         double projX = x1 + t * (x2 - x1);
         double projY = y1 + t * (y2 - y1);
-        if (toC) {
-            toCollision.x = (int) t * (x2 - x1);
-            toCollision.y = (int) t * (y2 - y1);
-        }
 
         return Math.sqrt(Math.pow(projX - px, 2) + Math.pow(projY - py, 2));
     }
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("SAT Circle Collision with Sliding Example");
-        Collisions panel = new Collisions();
+        Collisions panel = new Collisions(frame);
         frame.add(panel);
         frame.setSize(1920, 1080);  // Set the window size
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
