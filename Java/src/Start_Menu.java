@@ -99,8 +99,17 @@ public class Start_Menu extends JPanel implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-            main.switchToMainMenu(frame);
+            switchToMainMenu(frame);
         }
+    }
+
+    public static void switchToMainMenu(JFrame frame) {
+        frame.getContentPane().removeAll();
+        Main_Menu mainMenu = new Main_Menu(frame); // New instance of Main_Menu
+        frame.add(mainMenu);
+        frame.revalidate();
+        frame.repaint();
+        mainMenu.requestFocusInWindow(); // Focus for key events
     }
 
     @Override

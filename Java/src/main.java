@@ -53,15 +53,6 @@ public class main {
         }
     }
 
-    public static void switchToMainMenu(JFrame frame) {
-        frame.getContentPane().removeAll();
-        Main_Menu mainMenu = new Main_Menu(frame); // New instance of Main_Menu
-        frame.add(mainMenu);
-        frame.revalidate();
-        frame.repaint();
-        mainMenu.requestFocusInWindow(); // Focus for key events
-    }
-
     public static void main(String[] args) {
         loadOptions(); // Load options from file
 
