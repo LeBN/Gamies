@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8477a2bc-c96d-4a22-99a8-117d6085c459" name="Changes" comment="mariaDB lib" />
+    <list default="true" id="8477a2bc-c96d-4a22-99a8-117d6085c459" name="Changes" comment="mariaDB lib">
+      <change beforePath="$PROJECT_DIR$/../Docs/Levels.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Docs/Levels.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Collisions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Collisions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main_Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main_Menu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -45,6 +53,7 @@
   "keyToString": {
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Application.Collisions.executor": "Run",
+    "Application.Game.executor": "Run",
     "Application.LoadingPage.executor": "Run",
     "Application.Main.executor": "Run",
     "Application.Start_Menu.executor": "Debug",
@@ -91,7 +100,7 @@
       <workItem from="1729546104536" duration="2882000" />
       <workItem from="1729550109372" duration="12106000" />
       <workItem from="1729718747232" duration="27507000" />
-      <workItem from="1729747241931" duration="20542000" />
+      <workItem from="1729747241931" duration="30206000" />
     </task>
     <task id="LOCAL-00001" summary="Collision system">
       <option name="closed" value="true" />
@@ -141,7 +150,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729795277157</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="mariaDB lib">
+      <option name="closed" value="true" />
+      <created>1729795554935</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1729795554935</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

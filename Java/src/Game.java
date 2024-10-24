@@ -9,6 +9,7 @@ public class Game extends JPanel {
     private Player player;
     private PauseMenu pauseMenu;
     private Collisions collisions;
+    private double playerX=1012, playerY=646;
 
     public Game(JFrame frame) {
         this.frame = frame;
@@ -23,7 +24,7 @@ public class Game extends JPanel {
         level.setBounds(0, 0, width, height); // Make the level panel fill the entire game area
         add(level); // Add the level panel to the game panel
 
-        collisions = new Collisions(frame);
+        collisions = new Collisions(frame, playerX, playerY);
         collisions.setBounds(0, 0, width, height);
         frame.add(collisions);
         collisions.setFocusable(true);  // Make sure it can receive key events
@@ -34,6 +35,19 @@ public class Game extends JPanel {
         // Adding a delay to ensure the frame is visible before requesting focus
         SwingUtilities.invokeLater(() -> {
             collisions.requestFocusInWindow();
+        });
+
+        player = new Player(frame, playerX, playerY);
+        player.setBounds(0, 0, width, height);
+        frame.add(player);
+        player.setFocusable(true);  // Make sure it can receive key events
+        frame.revalidate();
+        player.repaint();
+        player.requestFocusInWindow();
+
+        // Adding a delay to ensure the frame is visible before requesting focus
+        SwingUtilities.invokeLater(() -> {
+            player.requestFocusInWindow();
         });
     }
 
@@ -99,5 +113,17 @@ public class Game extends JPanel {
         frame.revalidate();
         frame.repaint();
         main_menu.requestFocusInWindow();
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Game testing");
+        Game game = new Game(frame);
+        frame.add(game);
+        frame.setSize(1920, 1080);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+        frame.revalidate(); // Revalidate the layout
+        frame.repaint(); // Repaint to ensure it's drawn
+        game.requestFocusInWindow(); // Ensure focus is on the game
     }
 }

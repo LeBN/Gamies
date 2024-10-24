@@ -1,0 +1,1 @@
+(0, "https://github.com/LeBN/Gamies/raw/main/Assets/Levels/Level_0_0.png", "https://github.com/LeBN/Gamies/raw/main/Assets/Levels/Clevel_0.txt", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null)

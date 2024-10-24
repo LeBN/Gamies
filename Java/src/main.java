@@ -10,7 +10,7 @@ public class main {
     private static int volume = 50; // Default value
     private static int soundEffect = 50; // Default value
     private static int fpsLimit = 60; // Default FPS limit
-    private static boolean showCollision = false; // Default show_collision
+    public static boolean showCollision = false; // Default show_collision
 
     public static void loadOptions() {
         try (BufferedReader reader = new BufferedReader(new FileReader("options.txt"))) {

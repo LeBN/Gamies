@@ -9,7 +9,7 @@ public class Main_Menu extends JPanel {
     private Image titleImage; // Title image
     private Font buttonFont; // Font for the buttons
     private JFrame frame;
-    private int selectedButtonIndex = 0; //Index of the selected button
+    private int selectedButtonIndex = 3; //Index of the selected button
     private JButton[] buttons; // Buttons array
     private Image selectionCrystal; // selection crystal image
 

@@ -8,7 +8,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
 
 public class Collisions extends JPanel {
-    private double playerX = 100, playerY = 100, playerRadius = 30;  // Circle player properties
+    private double playerX = 1012, playerY = 646, playerRadius = 25;  // Circle player properties
     private List<Polygon> obstacles = new ArrayList<>();  // Obstacles list
     private int playerSpeed = 5;  // Player movement speed
     private Vector2D playerMovement = new Vector2D(); // Player movement
@@ -16,19 +16,47 @@ public class Collisions extends JPanel {
     private int mouseX = 0; // Variable to store the mouse X position
     private int mouseY = 0; // Variable to store the mouse Y position
     private double friction = 0.75;
+    private int opacity = 0;
 
-    public Collisions(Frame frame){
+    public Collisions(Frame frame, double playerX, double playerY) {
+        this.playerX = playerX;
+        this.playerY = playerY;
+
         obstacles.add(new Polygon(
-                new int[]{400, 500, 450},
-                new int[]{300, 300, 200},
+                new int[]{827, 760, 835, 883, 907, 910},
+                new int[]{869, 826, 735, 744, 779, 823},
+                6
+        ));
+
+        /*obstacles.add(new Polygon(
+                new int[]{1222, 1406, 1227, 1009, 911, 1026, 946, 810, 372, 147, 140,   0, 0, 1920, 1920, 1505, 1540,
+                1566, 1510, 1314},
+                new int[]{ 707,  585,  473,  586, 528,  446, 396, 431, 405, 563, 878, 878, 0,    0, 1080,  898,  870,
+                 670,  647,  773},
+                20
+        ));*/
+
+        obstacles.add(new Polygon(
+                new int[]{1009, 904, 1133, 1227},
+                new int[]{ 591, 535,  373,  473},
+                4
+        ));
+
+        obstacles.add(new Polygon(
+                new int[]{1202, 1404, 1418},
+                new int[]{ 473,  584,  431},
                 3
         ));
 
         obstacles.add(new Polygon(
-                new int[]{500, 450, 500, 600, 800},
-                new int[]{300, 200, 150, 50, 600},
-                5
+                new int[]{1307, 1228, 1464, 1574},
+                new int[]{ 756,  703,  524,  598},
+                4
         ));
+
+        if (main.showCollision) {
+            opacity = 100;
+        }
 
         // KeyListener to move the player
         setFocusable(true);
@@ -122,12 +150,12 @@ public class Collisions extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         // Draw the player (circle)
-        g2d.setColor(new Color(0, 0, 255, 100));
+        g2d.setColor(new Color(0, 0, 255, opacity));
         g2d.fillOval((int) (playerX - playerRadius), (int) (playerY - playerRadius), (int) (playerRadius * 2),
                 (int) (playerRadius * 2));
 
         // Draw obstacles
-        g2d.setColor(new Color(100, 0, 0, 100));
+        g2d.setColor(new Color(100, 0, 0, opacity));
         for (Polygon obstacle : obstacles) {
             g2d.fill(obstacle);
         }
@@ -310,8 +338,8 @@ public class Collisions extends JPanel {
     }
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("SAT Circle Collision with Sliding Example");
-        Collisions panel = new Collisions(frame);
+        JFrame frame = new JFrame("Collisions Testing");
+        Collisions panel = new Collisions(frame, 1012, 646);
         frame.add(panel);
         frame.setSize(1920, 1080);  // Set the window size
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
