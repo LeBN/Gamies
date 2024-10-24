@@ -1,60 +1,73 @@
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class main {
-    private static boolean fullscreen = true;
-    private static int volume = 50; // Default value
-    private static int soundEffect = 50; // Default value
-    private static int fpsLimit = 60; // Default FPS limit
-    private static boolean showCollision = false; // Default show_collision
+    private static boolean fullscreen;
+    private static int volume;
+    private static int soundEffect;
+    private static int fpsLimit;
+    private static boolean showCollision;
 
     public static void loadOptions() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("options.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (line.startsWith("fullscreen=")) {
-                    fullscreen = Boolean.parseBoolean(line.split("=")[1]);
-                } else if (line.startsWith("volume=")) {
-                    volume = Integer.parseInt(line.split("=")[1]);
-                } else if (line.startsWith("sound_effect=")) {
-                    soundEffect = Integer.parseInt(line.split("=")[1]);
-                } else if (line.startsWith("fps_limit=")) {
-                    fpsLimit = Integer.parseInt(line.split("=")[1]);
-                } else if (line.startsWith("show_collision=")) {
-                    showCollision = Boolean.parseBoolean(line.split("=")[1]);
-                }
+        String query = "SELECT fullscreen, volume, sound_effect, fps_limit, show_collision FROM Options LIMIT 1";
+        try (Connection conn = DbManagement.connect();
+             PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            if (rs.next()) {
+                fullscreen = rs.getBoolean("fullscreen");
+                volume = rs.getInt("volume");
+                soundEffect = rs.getInt("sound_effect");
+                fpsLimit = rs.getInt("fps_limit");
+                showCollision = rs.getBoolean("show_collision");
             }
-        } catch (IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace(); // Error handling
         }
     }
 
     public static void limitFPS() {
-        long targetTime = 1000 / fpsLimit; // Time per frame in milliseconds
-        long startTime;
-        long elapsedTime;
+        int fps = fpsLimit; // Assuming fpsLimit is set somewhere in your code
+        if (fps <= 0) {
+            fps = 60; // Default to 60 FPS if fpsLimit is zero or negative
+        }
+        long frameDuration = 1000 / fps;
+        long startTime = System.currentTimeMillis();
 
         while (true) {
-            startTime = System.currentTimeMillis();
-            elapsedTime = System.currentTimeMillis() - startTime;
-            long sleepTime = targetTime - elapsedTime;
-
-            if (sleepTime > 0) {
+            long elapsedTime = System.currentTimeMillis() - startTime;
+            if (elapsedTime < frameDuration) {
                 try {
-                    Thread.sleep(sleepTime);
+                    Thread.sleep(frameDuration - elapsedTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
+            startTime = System.currentTimeMillis();
         }
     }
 
+    public static void switchToMainMenu(JFrame frame) {
+        frame.getContentPane().removeAll();
+        Main_Menu mainMenu = new Main_Menu(frame);
+        frame.add(mainMenu);
+        frame.revalidate();
+        frame.repaint();
+        mainMenu.requestFocusInWindow();
+    }
+
     public static void main(String[] args) {
-        loadOptions(); // Load options from file
+        DbManagement.initializeDatabase(); // Ensure database is created
+
+        loadOptions(); // Load options from database
+
         JFrame frame = new JFrame("Purple Heart");
 
         try {
@@ -74,6 +87,17 @@ public class main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         startMenu.requestFocusInWindow(); // Focus for key events
+
+        // Add key listener for Enter key
+        startMenu.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    switchToMainMenu(frame);
+                }
+            }
+        });
+        startMenu.setFocusable(true);
 
         if (fullscreen) {
             frame.dispose(); // Close the window
