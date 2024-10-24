@@ -1,6 +1,4 @@
-#Thu Oct 24 03:14:09 CEST 2024
-fps_limit=241
+#Thu Oct 24 22:34:51 CEST 2024
 fullscreen=true
-show_collision=true
 sound_effect=50
 volume=70

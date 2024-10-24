@@ -1,5 +1,3 @@
-// Java/src/Options_Menu.java
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -56,7 +54,6 @@ public class Options_Menu extends JPanel {
     private void saveOptions() {
         String updateQuery = "UPDATE Options SET fullscreen = ?, show_collision = ?, volume = ?, sound_effect = ?, fps_limit = ?";
         String insertQuery = "INSERT INTO Options (fullscreen, show_collision, volume, sound_effect, fps_limit) VALUES (?, ?, ?, ?, ?)";
-        System.out.println("Attempting to save options to the database..."); // Debug statement
 
         try (Connection conn = DbManagement.connect();
              PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
@@ -71,7 +68,6 @@ public class Options_Menu extends JPanel {
 
             // Execute update statement
             int rowsUpdated = updateStmt.executeUpdate();
-            System.out.println("Options saved to the database. Rows updated: " + rowsUpdated);
 
             // If no rows were updated, execute insert statement
             if (rowsUpdated == 0) {
@@ -81,32 +77,11 @@ public class Options_Menu extends JPanel {
                 insertStmt.setInt(4, effectsSlider.getValue());
                 insertStmt.setInt(5, fpsSlider.getValue());
 
-                int rowsInserted = insertStmt.executeUpdate();
-                System.out.println("Options inserted into the database. Rows inserted: " + rowsInserted);
+                insertStmt.executeUpdate();
             }
 
         } catch (SQLException e) {
             e.printStackTrace(); // Error handling
-        }
-    }
-
-    // Print database contents
-    private void printDatabaseContents() {
-        String query = "SELECT * FROM Options";
-        try (Connection conn = DbManagement.connect();
-             PreparedStatement pstmt = conn.prepareStatement(query);
-             ResultSet rs = pstmt.executeQuery()) {
-
-            System.out.println("Database contents:");
-            while (rs.next()) {
-                System.out.println("Fullscreen: " + rs.getBoolean("fullscreen"));
-                System.out.println("Show Collision: " + rs.getBoolean("show_collision"));
-                System.out.println("Volume: " + rs.getInt("volume"));
-                System.out.println("Sound Effect: " + rs.getInt("sound_effect"));
-                System.out.println("FPS Limit: " + rs.getInt("fps_limit"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
