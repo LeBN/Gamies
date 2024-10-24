@@ -34,8 +34,6 @@ public class main {
     }
 
     public static void limitFPS() {
-        // Logic to limit FPS can be added here
-        // This is a basic placeholder logic. You can enhance it further.
         long targetTime = 1000 / fpsLimit; // Time per frame in milliseconds
         long startTime;
         long elapsedTime;
@@ -70,7 +68,7 @@ public class main {
 
         JFrame frame = new JFrame("Purple Heart");
 
-        // Définir l'icône de la fenêtre
+
         try {
             URL iconURL = new URL(
                     "https://github.com/LeBN/Gamies/raw/" +
@@ -79,7 +77,7 @@ public class main {
             Image icon = new ImageIcon(iconURL).getImage();
             frame.setIconImage(icon);
         } catch (Exception e) {
-            e.printStackTrace(); // Gestion d'erreur si l'image ne peut pas être chargée
+            e.printStackTrace();
         }
 
         Start_Menu startMenu = new Start_Menu(frame);
@@ -95,8 +93,6 @@ public class main {
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Fullscreen
             frame.setVisible(true); // Show the window
         }
-
-        // Start limiting FPS after setting up the frame
         limitFPS();
     }
 }

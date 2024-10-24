@@ -43,7 +43,7 @@ public class Credits extends JPanel {
             Image crossImage = new ImageIcon(new URL("https://github.com/LeBN/Gamies/raw/main/Assets/UI/UI_Cross.png")).getImage();
             Image crossIcon = crossImage.getScaledInstance(48, 42, Image.SCALE_SMOOTH);
 
-            // Create the cross button with the button image and cross image
+            // Create the cross button
             JButton crossButton = new JButton(new ImageIcon(buttonIcon));
             crossButton.setBorderPainted(false);
             crossButton.setContentAreaFilled(false);
@@ -93,7 +93,7 @@ public class Credits extends JPanel {
             g.fillRect(0, 0, width, height);
         }
 
-        // Draw the credits background panel centered
+        // Credits background panel centered
         if (creditsBGPanel != null) {
             int panelWidth = 1829;
             int panelHeight = 1155;
@@ -104,7 +104,7 @@ public class Credits extends JPanel {
             int panelY = (height - panelHeight) / 2;
             g.drawImage(creditsBGPanel, panelX, panelY, panelWidth, panelHeight, this);
 
-            // Draw the subtitle background image for "Credits"
+            // Subtitle background image
             if (subtitleBack != null) {
                 int subtitleWidth = 313;
                 int subtitleHeight = 122;
@@ -128,12 +128,11 @@ public class Credits extends JPanel {
             }
         }
 
-        // Draw creators information with underline
+        // Draw creators information
         g.setFont(creditsFont);
         g.setColor(Color.WHITE); // Set text color to white
         g.drawString("Creators:", 256, 272); // Position for "Creators"
 
-        // Draw creators' names with increased line spacing
         int creatorsY = 312; // Increase spacing here
         g.drawString("Gaël Floquet - Efrei Paris - UCI DCE Student", 256, creatorsY);
         creatorsY += 40; // Move down for next line
@@ -142,7 +141,7 @@ public class Credits extends JPanel {
         // Add extra space for Sources
         creatorsY += 100; // Doubled the space to 100
 
-        // Draw sources information with increased line spacing
+        // Draw sources information
         g.setColor(Color.WHITE);
         g.drawString("Sources:", 256, creatorsY);
         g.drawString("Images by Midjourney (Midjourney.com)", 256, creatorsY + 30);
