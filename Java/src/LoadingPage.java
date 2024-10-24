@@ -8,23 +8,30 @@ public class LoadingPage extends JPanel {
     private Color bgColor = new Color(0,0,0);
     private Font font; // Font for the loading text
 
-    public void loadingPage(JFrame frame, int state) {
+    public LoadingPage(JFrame frame, int state) {
         this.frame = frame;
-        this.setBackground(bgColor);
-        this.setLayout(null);
 
-        // Loading assets
         try {
             // Load font
             URL fontURL = new URL("https://raw.githubusercontent.com/LeBN/Gamies/main/Assets/Fonts/" +
                     "PressStart2P.ttf");
             InputStream messageFontStream = fontURL.openStream();
             font = Font.createFont(Font.TRUETYPE_FONT, messageFontStream).deriveFont(21f);
+            setLayout(null);
         } catch (Exception e) {
             font = new Font("Serif", Font.PLAIN, 24);
             e.printStackTrace();
         }
+    }
 
-        frame.add(this);
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        int width = getWidth();
+        int height = getHeight();
+        g.setColor(bgColor);
+        g.setFont(font);
+        g.setColor(Color.WHITE); // Set text color to white
+        g.drawString("Loading", 100, 100);
     }
 }

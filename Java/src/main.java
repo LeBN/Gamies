@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 
 public class main {
-    private static boolean fullscreen = false;
+    private static boolean fullscreen = true;
     private static int volume = 50; // Default value
     private static int soundEffect = 50; // Default value
     private static int fpsLimit = 60; // Default FPS limit

@@ -76,6 +76,7 @@ public class Credits extends JPanel {
             subtitleFont = new Font("Serif", Font.PLAIN, 26);
             creditsFont = new Font("Serif", Font.PLAIN, 21);
             e.printStackTrace();
+            setLayout(null);
         }
     }
 

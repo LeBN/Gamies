@@ -219,6 +219,7 @@ public class Main_Menu extends JPanel {
 
     // Main menu switch
     public static void switchToMainMenu(JFrame frame) {
+        displayLoadingPage(frame);
         frame.getContentPane().removeAll();
         Main_Menu main_menu = new Main_Menu(frame);
         frame.add(main_menu);
@@ -228,6 +229,7 @@ public class Main_Menu extends JPanel {
     }
 
     public static void switchToGame(JFrame frame) {
+        displayLoadingPage(frame);
         frame.getContentPane().removeAll();
         Game game = new Game(frame);
         frame.add(game);
@@ -236,7 +238,17 @@ public class Main_Menu extends JPanel {
         game.requestFocusInWindow();
     }
 
+    public static void displayLoadingPage(JFrame frame) {
+        frame.getContentPane().removeAll();
+        LoadingPage loadingPage = new LoadingPage(frame, 0);
+        frame.add(loadingPage);
+        frame.revalidate();
+        frame.repaint();
+        loadingPage.requestFocusInWindow();
+    }
+
     public void switchToCredits() {
+        displayLoadingPage(frame);
         frame.getContentPane().removeAll();
         Credits credits = new Credits(frame);
         frame.add(credits);
