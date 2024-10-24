@@ -66,12 +66,16 @@ public class main {
 
     public static void main(String[] args) {
         loadOptions(); // Load options from file
+        loadOptions();
 
         JFrame frame = new JFrame("Purple Heart");
 
         // Définir l'icône de la fenêtre
         try {
-            URL iconURL = new URL("https://github.com/LeBN/Gamies/raw/6c73e2c2216df9f27596bc9e29fc6d88c524424e/Assets/UI/Purple_Heart_Logo.png");
+            URL iconURL = new URL(
+                    "https://github.com/LeBN/Gamies/raw/" +
+                            "6c73e2c2216df9f27596bc9e29fc6d88c524424e/Assets/UI/Purple_Heart_Logo.png"
+            );
             Image icon = new ImageIcon(iconURL).getImage();
             frame.setIconImage(icon);
         } catch (Exception e) {
