@@ -1,2 +1,300 @@
-public class Collisions {
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Collisions extends JPanel {
+    private double playerX = 100, playerY = 100, playerRadius = 30;  // Circle player properties
+    private List<Polygon> obstacles = new ArrayList<>();  // Obstacles list
+    private int playerSpeed = 5;  // Player movement speed
+    private Vector2D playerMovement = new Vector2D(); // Player movement
+    private int up=0, down=0, left=0, right=0;
+    private double friction = 0.75;
+    private double piOver2 = Math.PI/2;
+    private double pi3Over2 = (Math.PI*3)/2;
+    private Vector2D toCollision = new Vector2D();
+
+    public Collisions() {
+        // Example obstacle: Triangle
+        obstacles.add(new Polygon(
+                new int[]{400, 500, 450},
+                new int[]{300, 300, 200},
+                3
+        ));
+
+        obstacles.add(new Polygon(
+                new int[]{500, 450, 500, 600, 800},
+                new int[]{300, 200, 150, 50, 600},
+                5
+        ));
+
+        // KeyListener to move the player
+        setFocusable(true);
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                setPlayerMovement(e.getKeyCode(), true);
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                setPlayerMovement(e.getKeyCode(), false);
+            }
+        });
+
+        // Repaint the screen regularly
+        Timer timer = new Timer(16, e -> {
+            movePlayer();
+            repaint();
+        });  // ~60 FPS
+        timer.start();
+    }
+
+    // Set the movement direction for the player based on the key pressed
+    private void setPlayerMovement(int keyCode, boolean pressed) {
+        int movement = pressed ? playerSpeed : 0;
+
+        if (keyCode == KeyEvent.VK_UP) up = -movement;
+        if (keyCode == KeyEvent.VK_DOWN) down = movement;
+        if (keyCode == KeyEvent.VK_LEFT) left = -movement;
+        if (keyCode == KeyEvent.VK_RIGHT) right = movement;
+
+        playerMovement.x = right + left;
+        playerMovement.y = up + down;
+    }
+
+    // Handle player movement and check for collisions
+    private void movePlayer() {
+        // Store the collisions
+        List<Polygon> collisions = new ArrayList<>();
+        int numberOfCollisions = 0;
+
+        // Store the original movement
+        double moveX = playerMovement.x;
+        double moveY = playerMovement.y;
+
+        // Move the player
+        playerX += moveX;
+        playerY += moveY;
+        if (playerX < 0) playerX = 0;
+        if (playerY < 0) playerY = 0;
+        if (playerX > 1920) playerX = 1920;
+        if (playerY > 1080) playerY = 1080;
+
+        // Collision check for every obstacle
+        for (Polygon obstacle : obstacles) {
+            if (SATCirclePolygonCollision(playerX, playerY, playerRadius, obstacle)) {
+                collisions.add(obstacle);
+                numberOfCollisions++;
+            }
+        }
+
+        if (numberOfCollisions > 1) {
+            // Block the player
+            playerX -= moveX;
+            playerY -= moveY;
+        } else if (numberOfCollisions != 0) {
+            resolveCollisionWithSliding(collisions.get(0), playerMovement);
+        }
+    }
+
+    // Render the player and obstacles
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+
+        // Draw the player (circle)
+        g2d.setColor(Color.BLUE);
+        g2d.fillOval((int) (playerX - playerRadius), (int) (playerY - playerRadius), (int) (playerRadius * 2),
+                (int) (playerRadius * 2));
+
+        // Draw obstacles
+        g2d.setColor(Color.RED);
+        for (Polygon obstacle : obstacles) {
+            g2d.fill(obstacle);
+        }
+    }
+
+    // Resolve the collision by sliding the player along the surface
+    private void resolveCollisionWithSliding(Polygon polygon, Vector2D move) {
+        // Get the closest edge to the player that caused the collision or the information that 2 or more edges
+        // are in collision with the player
+        int closestEdgeIndex = getClosestEdgeToCircle(polygon, playerX, playerY, playerRadius, true);
+
+        if (closestEdgeIndex != -1) {
+            double x1 = polygon.xpoints[closestEdgeIndex];
+            double y1 = polygon.ypoints[closestEdgeIndex];
+            double x2 = polygon.xpoints[(closestEdgeIndex + 1) % polygon.npoints];
+            double y2 = polygon.ypoints[(closestEdgeIndex + 1) % polygon.npoints];
+
+            // Edge vector
+            Vector2D edge = new Vector2D(x2 - x1, y2 - y1);
+
+            // Sliding vector
+            Vector2D slide = Vector2D.mul(edge, Vector2D.dot(edge, playerMovement)/edge.dot(edge));
+            //slide.mul(friction);
+
+            // Apply the sliding movement
+            playerX += slide.x;
+            playerY += slide.y;
+        }
+
+        playerX -= move.x;
+        playerY -= move.y;
+        if (playerX < 0) playerX = 0;
+        if (playerY < 0) playerY = 0;
+        if (playerX > 1920) playerX = 1920;
+        if (playerY > 1080) playerY = 1080;
+    }
+
+    // SAT Circle-to-Polygon Collision Detection
+    private boolean SATCirclePolygonCollision(double circleX, double circleY, double radius, Polygon polygon) {
+        // Check collision on the axes formed by the polygon edges
+        if (!checkCollisionOnAxesForCircle(polygon, circleX, circleY, radius)) {
+            return false;
+        }
+
+        // Check collision on the axis from the circle center to the closest polygon point
+        int closestPointIndex = findClosestPointOnPolygon(circleX, circleY, polygon);
+        int closestX = polygon.xpoints[closestPointIndex];
+        int closestY = polygon.ypoints[closestPointIndex];
+
+        // Create an axis from the circle's center to the closest polygon point
+        int axisX = (int) (closestX - circleX);
+        int axisY = (int) (closestY - circleY);
+
+        double[] projectionCircle = projectCircle(circleX, circleY, radius, axisX, axisY);
+        double[] projectionPolygon = projectShape(polygon, axisX, axisY);
+
+        return projectionCircle[1] >= projectionPolygon[0] && projectionPolygon[1] >= projectionCircle[0];
+    }
+
+    // Check collision on the polygon's axes (as before)
+    private boolean checkCollisionOnAxesForCircle(Polygon polygon, double circleX, double circleY, double radius) {
+        int numPoints = polygon.npoints;
+
+        for (int i = 0; i < numPoints; i++) {
+            int x1 = polygon.xpoints[i];
+            int y1 = polygon.ypoints[i];
+            int x2 = polygon.xpoints[(i + 1) % numPoints];
+            int y2 = polygon.ypoints[(i + 1) % numPoints];
+
+            // Get the axis perpendicular to the edge
+            int axisX = -(y2 - y1);
+            int axisY = x2 - x1;
+
+            double[] projectionCircle = projectCircle(circleX, circleY, radius, axisX, axisY);
+            double[] projectionPolygon = projectShape(polygon, axisX, axisY);
+
+            if (projectionCircle[1] < projectionPolygon[0] || projectionPolygon[1] < projectionCircle[0]) {
+                return false;  // No collision
+            }
+        }
+
+        return true;  // Collision detected
+    }
+
+    // Project a circle onto an axis (as before)
+    private double[] projectCircle(double circleX, double circleY, double radius, double axisX, double axisY) {
+        double centerProjection = (circleX * axisX + circleY * axisY) / Math.sqrt(axisX * axisX + axisY * axisY);
+        return new double[]{centerProjection - radius, centerProjection + radius};
+    }
+
+    // Project a polygon onto an axis (as before)
+    private double[] projectShape(Polygon shape, int axisX, int axisY) {
+        double min = Double.MAX_VALUE, max = -Double.MAX_VALUE;
+
+        for (int i = 0; i < shape.npoints; i++) {
+            int x = shape.xpoints[i];
+            int y = shape.ypoints[i];
+
+            // Project the point onto the axis
+            double projection = (x * axisX + y * axisY) / Math.sqrt(axisX * axisX + axisY * axisY);
+
+            min = Math.min(min, projection);
+            max = Math.max(max, projection);
+        }
+
+        return new double[]{min, max};
+    }
+
+    // Find the closest point on the polygon to the circle's center (as before)
+    private int findClosestPointOnPolygon(double circleX, double circleY, Polygon polygon) {
+        int closestIndex = 0;
+        double closestDistance = Double.MAX_VALUE;
+
+        for (int i = 0; i < polygon.npoints; i++) {
+            int x = polygon.xpoints[i];
+            int y = polygon.ypoints[i];
+
+            double distance = Math.sqrt((x - circleX) * (x - circleX) + (y - circleY) * (y - circleY));
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestIndex = i;
+            }
+        }
+
+        return closestIndex;
+    }
+
+    // Get the closest edge to the circle's center and return -1 if 2 or more edges are at the same distance
+    private int getClosestEdgeToCircle(Polygon polygon, double circleX, double circleY, double circleR,
+                                       boolean isPlayer) {
+        int closestEdgeIndex = 0;
+        double[] distances = new double[polygon.npoints];
+        double closestDistance = Double.MAX_VALUE;
+
+        for (int i = 0; i < polygon.npoints; i++) {
+            int x1 = polygon.xpoints[i];
+            int y1 = polygon.ypoints[i];
+            int x2 = polygon.xpoints[(i + 1) % polygon.npoints];
+            int y2 = polygon.ypoints[(i + 1) % polygon.npoints];
+
+            // Calculate the distance from the circle's center to the edge
+            double distance = pointToLineDistance(circleX, circleY, x1, y1, x2, y2, isPlayer);
+            distances[i] = distance;
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestEdgeIndex = i;
+            }
+        }
+
+        for (int i = 0; i < polygon.npoints; i++) {
+            if (i != closestEdgeIndex && distances[i] == closestDistance) {
+                return -1;
+            }
+        }
+
+        return closestEdgeIndex;
+    }
+
+    // Helper function to calculate distance from a point to a line segment
+    private double pointToLineDistance(double px, double py, double x1, double y1, double x2, double y2, boolean toC) {
+        double lengthSquared = Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2);
+        if (lengthSquared == 0) return Math.sqrt(Math.pow(px - x1, 2) + Math.pow(py - y1, 2));
+
+        double t = ((px - x1) * (x2 - x1) + (py - y1) * (y2 - y1)) / lengthSquared;
+        t = Math.max(0, Math.min(1, t));
+
+        double projX = x1 + t * (x2 - x1);
+        double projY = y1 + t * (y2 - y1);
+        if (toC) {
+            toCollision.x = (int) t * (x2 - x1);
+            toCollision.y = (int) t * (y2 - y1);
+        }
+
+        return Math.sqrt(Math.pow(projX - px, 2) + Math.pow(projY - py, 2));
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("SAT Circle Collision with Sliding Example");
+        Collisions panel = new Collisions();
+        frame.add(panel);
+        frame.setSize(1920, 1080);  // Set the window size
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
 }
