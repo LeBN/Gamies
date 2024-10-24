@@ -12,19 +12,32 @@ public class Options_Menu extends JPanel {
     private Image subtitleBack; // Subtitle background image
     private Font subtitleFont; // Font for the subtitle
     private JButton fullscreenButton; // Fullscreen toggle button
+    private JButton showCollisionButton; // Show collision toggle button
     private boolean isFullscreenOn = false; // Fullscreen state
+    private boolean isShowCollisionOn = false; // Show collision state
     private JFrame frame;
     private JSlider volumeSlider; // Volume slider
     private JSlider effectsSlider; // Effects slider
+    private JSlider fpsSlider; // FPS limit slider
+    private int fpsLimit = 60; // Default FPS limit
+    private JLabel fpsValueLabel; // Label to display FPS value
+
 
     private void loadOptions() {
         Properties properties = new Properties();
         try (InputStream input = new FileInputStream("options.txt")) {
             properties.load(input);
             isFullscreenOn = Boolean.parseBoolean(properties.getProperty("fullscreen", "false"));
+            isShowCollisionOn = Boolean.parseBoolean(properties.getProperty("show_collision", "false"));
             volumeSlider.setValue(Integer.parseInt(properties.getProperty("volume", "50")));
             effectsSlider.setValue(Integer.parseInt(properties.getProperty("sound_effect", "50")));
+            fpsLimit = Integer.parseInt(properties.getProperty("fps_limit", "60"));
+
             fullscreenButton.setText(isFullscreenOn ? "ON" : "OFF");
+            showCollisionButton.setText(isShowCollisionOn ? "ON" : "OFF");
+            fpsSlider.setValue(fpsLimit);
+            fpsValueLabel.setText(fpsLimit == 241 ? "Unlimited" : fpsLimit + " FPS");
+
         } catch (IOException e) {
             System.err.println("Failed to load options: " + e.getMessage());
         }
@@ -34,15 +47,17 @@ public class Options_Menu extends JPanel {
     private void saveOptions() {
         Properties properties = new Properties();
         properties.setProperty("fullscreen", Boolean.toString(isFullscreenOn));
+        properties.setProperty("show_collision", Boolean.toString(isShowCollisionOn));
         properties.setProperty("volume", Integer.toString(volumeSlider.getValue()));
         properties.setProperty("sound_effect", Integer.toString(effectsSlider.getValue()));
+        properties.setProperty("fps_limit", Integer.toString(fpsSlider.getValue()));
         try (OutputStream output = new FileOutputStream("options.txt")) {
             properties.store(output, null);
         } catch (IOException e) {
-            // Error Handle
             System.err.println("Failed to save options: " + e.getMessage());
         }
     }
+
     // Constructor
     public Options_Menu(JFrame frame) {
         this.frame = frame;
@@ -92,6 +107,27 @@ public class Options_Menu extends JPanel {
                 }
             });
 
+            // Show collision toggle button
+            showCollisionButton = new JButton("OFF", new ImageIcon(buttonIcon));
+            showCollisionButton.setBorderPainted(false);
+            showCollisionButton.setContentAreaFilled(false);
+            showCollisionButton.setFocusPainted(false);
+            showCollisionButton.setOpaque(false);
+            showCollisionButton.setPreferredSize(new Dimension(99, 99));
+            showCollisionButton.setFont(buttonFont); // Set the font to PressStart2P
+            showCollisionButton.setForeground(Color.decode("#c0cbdc")); // Set default text color to #c0cbdc
+            showCollisionButton.setHorizontalTextPosition(SwingConstants.CENTER); // Center text horizontally
+            showCollisionButton.setVerticalTextPosition(SwingConstants.CENTER); // Center text vertically
+
+            // Mouse listener show collision
+            showCollisionButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    isShowCollisionOn = !isShowCollisionOn;
+                    showCollisionButton.setText(isShowCollisionOn ? "ON" : "OFF");
+                }
+            });
+
             // Load slider images
             Image sliderBackImage = new ImageIcon(new URL("https://github.com/LeBN/Gamies/raw/main/Assets/UI/UI_Slider_Back.png")).getImage();
             Image sliderFrontImage = new ImageIcon(new URL("https://github.com/LeBN/Gamies/raw/main/Assets/UI/UI_Slider_Front.png")).getImage();
@@ -105,6 +141,57 @@ public class Options_Menu extends JPanel {
             // Create effects slider
             effectsSlider = createSlider(sliderBackImage, sliderFrontImage);
             effectsSlider.setBounds(1352, 459, 264, 81); // Position the effects slider
+
+            // Create FPS limit slider
+            fpsSlider = createSlider(sliderBackImage, sliderFrontImage);
+            fpsSlider.setMinimum(30);
+            fpsSlider.setMaximum(241);
+            fpsSlider.setValue(fpsLimit);
+            fpsSlider.setBounds(1352, 671, 264, 81); // Position the FPS slider
+
+            // Create label to display FPS value
+            fpsValueLabel = new JLabel(fpsLimit == 241 ? "Unlimited" : fpsLimit + " FPS");
+            fpsValueLabel.setFont(subtitleFont);
+            fpsValueLabel.setForeground(Color.WHITE);
+
+            // Calculate x position to center the label relative to the slider
+            int fpsValueLabelX = fpsSlider.getX() + (fpsSlider.getWidth() - fpsValueLabel.getPreferredSize().width) / 2;
+            fpsValueLabel.setBounds(fpsValueLabelX, fpsSlider.getY() + fpsSlider.getHeight() + 10, fpsValueLabel.getPreferredSize().width, 20); // Position the FPS value label below the slider
+
+            // Change listener to update FPS value label
+            fpsSlider.addChangeListener(e -> {
+                int value = fpsSlider.getValue();
+                fpsValueLabel.setText(value == 241 ? "Unlimited" : value + " FPS");
+                // Update the x position to keep the label centered
+                int updatedFpsValueLabelX = fpsSlider.getX() + (fpsSlider.getWidth() - fpsValueLabel.getPreferredSize().width) / 2;
+                fpsValueLabel.setBounds(updatedFpsValueLabelX, fpsSlider.getY() + fpsSlider.getHeight() + 10, fpsValueLabel.getPreferredSize().width, 20);
+            });
+
+            // Create label for the FPS option title
+            JLabel fpsLabel = new JLabel("FPS Limit");
+            fpsLabel.setFont(subtitleFont);
+            fpsLabel.setForeground(Color.WHITE);
+            fpsLabel.setBounds(285, 694, 308, 33); // Align with other option titles
+
+            // Create dashes label for the FPS limit
+            JLabel fpsDashesLabel = new JLabel("______________________");
+            fpsDashesLabel.setFont(subtitleFont);
+            fpsDashesLabel.setForeground(Color.GRAY);
+            fpsDashesLabel.setBounds(649, 695, 980, 33);
+
+            // Create arrow buttons for FPS slider
+            JButton fpsLeftArrow = createArrowButton(arrowLeftImage, -1, fpsSlider);
+            fpsLeftArrow.setBounds(1305, 682, 41, 47);
+            JButton fpsRightArrow = createArrowButton(arrowRightImage, 1, fpsSlider);
+            fpsRightArrow.setBounds(1624, 682, 41, 47);
+
+            // Add FPS components to the panel
+            add(fpsLabel);
+            add(fpsDashesLabel);
+            add(fpsSlider);
+            add(fpsValueLabel);
+            add(fpsLeftArrow);
+            add(fpsRightArrow);
 
             // Create labels for the options
             JLabel fullscreenLabel = new JLabel("Fullscreen");
@@ -136,6 +223,16 @@ public class Options_Menu extends JPanel {
             effectsDashesLabel.setFont(subtitleFont);
             effectsDashesLabel.setForeground(Color.GRAY);
             effectsDashesLabel.setBounds(649, 483, 980, 33);
+
+            JLabel showCollisionLabel = new JLabel("Show Collision");
+            showCollisionLabel.setFont(subtitleFont);
+            showCollisionLabel.setForeground(Color.WHITE);
+            showCollisionLabel.setBounds(285, 588, 308, 33);
+
+            JLabel showCollisionDashesLabel = new JLabel("______________________");
+            showCollisionDashesLabel.setFont(subtitleFont);
+            showCollisionDashesLabel.setForeground(Color.GRAY);
+            showCollisionDashesLabel.setBounds(649, 589, 980, 33);
 
             // Create arrow buttons for volume slider
             JButton volumeLeftArrow = createArrowButton(arrowLeftImage, -1, volumeSlider);
@@ -173,7 +270,6 @@ public class Options_Menu extends JPanel {
                 }
             });
 
-
             setLayout(null);
 
             // Add components to the panel
@@ -191,6 +287,10 @@ public class Options_Menu extends JPanel {
             add(effectsSlider);
             add(effectsLeftArrow);
             add(effectsRightArrow);
+            add(showCollisionLabel);
+            add(showCollisionDashesLabel);
+            showCollisionButton.setBounds(1350, 565, 99, 99); // Position the show collision button
+            add(showCollisionButton);
             add(crossButton);
 
             loadOptions(); // Load options from file
@@ -224,7 +324,6 @@ public class Options_Menu extends JPanel {
         slider.setMaximum(100);
         slider.setValue(50);
         slider.setPreferredSize(new Dimension(264, 81)); // Set slider size
-        slider.addChangeListener(e -> System.out.println("Slider value: " + slider.getValue()));
         return slider;
     }
 
@@ -290,6 +389,10 @@ public class Options_Menu extends JPanel {
                 int textHeight = fm.getAscent();
                 int textX = subtitleX + (subtitleWidth - textWidth) / 2;
                 int textY = subtitleY + (subtitleHeight + textHeight) / 2 - fm.getDescent();
+
+                // Draw the FPS limit value
+                g.setFont(subtitleFont.deriveFont((float) (21 * subtitleScale)));
+                g.setColor(Color.WHITE);
 
                 // Adjust text position
                 if (textX < 0 || textX + textWidth > width) {
