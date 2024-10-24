@@ -9,9 +9,9 @@ public class Main_Menu extends JPanel {
     private Image titleImage; // Title image
     private Font buttonFont; // Font for the buttons
     private JFrame frame;
-    private int selectedButtonIndex = 0; //Index of the selected button
+    private int selectedButtonIndex = 0; // Index of the selected button
     private JButton[] buttons; // Buttons array
-    private Image selectionCrystal; // selection crystal image
+    private Image selectionCrystal; // Selection crystal image
 
     // Constructor
     public Main_Menu(JFrame frame) {
@@ -26,21 +26,18 @@ public class Main_Menu extends JPanel {
             titleImage = new ImageIcon(titleImageURL).getImage(); // URL to image
 
             // Load the button font
-            URL fontURL = new URL("https://raw.githubusercontent.com/LeBN/Gamies/main/Assets/Fonts/" +
-                    "PressStart2P.ttf");
+            URL fontURL = new URL("https://raw.githubusercontent.com/LeBN/Gamies/main/Assets/Fonts/PressStart2P.ttf");
             InputStream fontStream = fontURL.openStream();
             buttonFont = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(21f); // Set font size to 21
 
             // Load button images and resize
-            Image buttonImage = new ImageIcon(new URL("https://github.com/LeBN/Gamies/raw/main/Assets/UI/" +
-                    "UI_Menu_Quit_Button.png")).getImage();
+            Image buttonImage = new ImageIcon(new URL("https://github.com/LeBN/Gamies/raw/main/Assets/UI/UI_Menu_Quit_Button.png")).getImage();
             Image buttonIconQuit = buttonImage.getScaledInstance(520, 138, Image.SCALE_SMOOTH);
             Image buttonIcon = buttonImage.getScaledInstance(825, 138, Image.SCALE_SMOOTH);
 
             // Load the selection crystal
             URL crystalURL = new URL("https://github.com/LeBN/Gamies/raw/main/Assets/UI/selection_crystal.png");
-            selectionCrystal = new ImageIcon(crystalURL).getImage().getScaledInstance(49, 93,
-                    Image.SCALE_SMOOTH);
+            selectionCrystal = new ImageIcon(crystalURL).getImage().getScaledInstance(49, 93, Image.SCALE_SMOOTH);
 
             // Create the buttons array
             buttons = new JButton[4];
@@ -74,7 +71,7 @@ public class Main_Menu extends JPanel {
             startGameButton.setFont(buttonFont);
             startGameButton.setBounds((1920 - 825) / 2, 365, 825, 138);
             styleButton(startGameButton);
-            startGameButton.addActionListener(e -> switchToGame((frame)));
+            startGameButton.addActionListener(e -> switchToGame(frame));
             buttons[3] = startGameButton; // Add to the array
 
             // Set layout to null for absolute positioning
@@ -196,7 +193,6 @@ public class Main_Menu extends JPanel {
                 break;
         }
     }
-
 
     // Method to draw the selection crystal
     private void drawCrystal(Graphics2D g2d, double x, double y, int angle) {
