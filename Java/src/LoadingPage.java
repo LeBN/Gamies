@@ -44,12 +44,4 @@ public class LoadingPage extends JPanel {
 
         g.drawString("Loading", x, y); // Draw text
     }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Loading Page"); // Create frame
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Close on exit
-        frame.setSize(800, 600); // Set frame size
-        frame.add(new LoadingPage(frame, 0)); // Add LoadingPage
-        frame.setVisible(true); // Show frame
-    }
 }
