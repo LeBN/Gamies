@@ -55,10 +55,7 @@ public class main {
 
     public static void main(String[] args) {
         loadOptions(); // Load options from file
-        loadOptions();
-
         JFrame frame = new JFrame("Purple Heart");
-
 
         try {
             URL iconURL = new URL(
