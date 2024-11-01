@@ -28,8 +28,10 @@ public class Vector2D {
 
     public void normalize() {
         double norm = this.lenght();
-        x = x / norm;
-        y = y / norm;
+        if (norm != 0.0) {
+            x = x / norm;
+            y = y / norm;
+        }
     }
 
     public double dot(Vector2D v) {

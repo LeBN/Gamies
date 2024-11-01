@@ -10,7 +10,7 @@ import java.awt.event.MouseEvent;
 public class Collisions extends JPanel {
     protected double playerX = 1012, playerY = 646, playerRadius = 25;  // Circle player properties
     private List<Polygon> obstacles = new ArrayList<>();  // Obstacles list
-    private int playerSpeed = 5;  // Player movement speed
+    private int playerSpeed = 3;  // Player movement speed
     protected Vector2D playerMovement = new Vector2D(); // Player movement
     protected int up=0, down=0, left=0, right=0;
     private int mouseX = 0; // Variable to store the mouse X position

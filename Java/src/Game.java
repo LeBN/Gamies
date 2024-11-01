@@ -67,16 +67,18 @@ public class Game extends JPanel {
 
 // Set the movement direction for the player based on the key pressed
     private void setPlayerMovement(int keyCode, boolean pressed) {
-        int movement = pressed ? collisions.getPlayerSpeed() : 0;
+        int movement = pressed ? 1 : 0;
 
-        if (keyCode == KeyEvent.VK_UP) collisions.up = -movement;
-        if (keyCode == KeyEvent.VK_DOWN) collisions.down = movement;
-        if (keyCode == KeyEvent.VK_LEFT) collisions.left = -movement;
-        if (keyCode == KeyEvent.VK_RIGHT) collisions.right = movement;
+        if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_W) collisions.up = -movement;
+        if (keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_S) collisions.down = movement;
+        if (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_A) collisions.left = -movement;
+        if (keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_D) collisions.right = movement;
         if (keyCode == KeyEvent.VK_ESCAPE) Main_Menu.switchToOptionsMenu(frame);
 
         collisions.playerMovement.x = collisions.right + collisions.left;
         collisions.playerMovement.y = collisions.up + collisions.down;
+        collisions.playerMovement.normalize();
+        collisions.playerMovement.mul(collisions.getPlayerSpeed());
     }
 
     private class Level extends JPanel {

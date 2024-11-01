@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-
 import java.net.URL;
 
 public class Player extends JPanel {
@@ -10,7 +9,7 @@ public class Player extends JPanel {
     private Image playerShadow;
     private BufferedImage playerIdle, playerWalk;
     private Image playerFrame;
-    private int animation=1;
+    private int animation=5;
     private boolean walk=false;
     private int timer1 = 0, timer2 = 0;
     private MediaTracker tracker;
@@ -39,7 +38,7 @@ public class Player extends JPanel {
             // Load the player character image
             URL PWalkURL = new URL("https://github.com/LeBN/Gamies/raw/main/Assets/Player/walk.png");
             Image PWalk = new ImageIcon(PWalkURL).getImage(); // URL to image
-            playerIdle = toBufferedImage(PWalk.getScaledInstance(PWalk.getWidth(this)*3,
+            playerWalk = toBufferedImage(PWalk.getScaledInstance(PWalk.getWidth(this)*3,
                     PWalk.getHeight(this)*3, Image.SCALE_SMOOTH));
 
         } catch (Exception e) {
@@ -52,7 +51,7 @@ public class Player extends JPanel {
             playerX = collisions.playerX;
             playerY = collisions.playerY;
             timer1++;
-            if (timer1 > 40) {
+            if (timer1 > 9) {
                 timer2++;
                 timer1 = 0;
             }
@@ -93,46 +92,55 @@ public class Player extends JPanel {
         walk = false;
 
         /*
-        *  5 6 7
-        * 4  P  0
-        *  3 2 1
+        *  2 3 4
+        * 1  P  5
+        *  1 0 5
         */
         if (collisions.playerMovement.x > 1 && collisions.playerMovement.y == 0) {
-            animation = 0;
-            walk = true;
-        } else if (collisions.playerMovement.x > 1 && collisions.playerMovement.y > 1) {
-            animation = 1;
-            walk = true;
-        } else if (collisions.playerMovement.x == 0 && collisions.playerMovement.y > 1) {
-            animation = 2;
-            walk = true;
-        } else if (collisions.playerMovement.x < 1 && collisions.playerMovement.y > 1) {
-            animation = 3;
-            walk = true;
-        } else if (collisions.playerMovement.x < 1 && collisions.playerMovement.y == 0) {
-            animation = 4;
-            walk = true;
-        } else if (collisions.playerMovement.x < 1 && collisions.playerMovement.y < 1) {
             animation = 5;
             walk = true;
-        } else if (collisions.playerMovement.x == 0 && collisions.playerMovement.y < 1) {
-            animation = 6;
+        } else if (collisions.playerMovement.x > 1 && collisions.playerMovement.y > 1) {
+            animation = 5;
             walk = true;
-        } else if (collisions.playerMovement.x > 1 && collisions.playerMovement.y < 1) {
-            animation = 7;
+        } else if (collisions.playerMovement.x == 0 && collisions.playerMovement.y > 1) {
+            animation = 0;
+            walk = true;
+        } else if (collisions.playerMovement.x < -1 && collisions.playerMovement.y > 1) {
+            animation = 1;
+            walk = true;
+        } else if (collisions.playerMovement.x < -1 && collisions.playerMovement.y == 0) {
+            animation = 1;
+            walk = true;
+        } else if (collisions.playerMovement.x < -1 && collisions.playerMovement.y < -1) {
+            animation = 2;
+            walk = true;
+        } else if (collisions.playerMovement.x == 0 && collisions.playerMovement.y < -1) {
+            animation = 3;
+            walk = true;
+        } else if (collisions.playerMovement.x > 1 && collisions.playerMovement.y < -1) {
+            animation = 4;
             walk = true;
         }
+
+        /*walk = false;
+        animation = 0;*/
 
         if (playerShadow != null) {
             g2d.drawImage(playerShadow, (int) playerX-playerShadow.getWidth(this) + 71,
                     (int) playerY-playerShadow.getHeight(this) + 67, this);
         }
 
-        if (playerIdle != null) {
+        if (playerIdle != null || playerWalk != null) {
             if (walk) {
-                playerFrame = playerWalk.getSubimage(animation*48, (timer2 + 1)*48, 48, 64);
+                playerFrame = playerWalk.getSubimage(
+                        timer2*playerWalk.getWidth()/8, animation*playerWalk.getHeight()/6,
+                        playerWalk.getWidth()/8, playerWalk.getHeight()/6
+                );
             } else {
-                playerFrame = playerIdle.getSubimage(animation*48, (timer2 + 1)*48, 48, 64);
+                playerFrame = playerIdle.getSubimage(
+                        timer2*playerIdle.getWidth()/8, animation*playerIdle.getHeight()/6,
+                        playerIdle.getWidth()/8, playerIdle.getHeight()/6
+                );
             }
 
             g2d.drawImage(playerFrame, (int) playerX-playerFrame.getWidth(this) + 71,
