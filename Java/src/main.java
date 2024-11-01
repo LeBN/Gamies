@@ -71,10 +71,10 @@ public class main {
     }
 
     // Method to play a .wav file
-    public static void playMusic(String filePath) {
+    public static void playMusic(String urlPath) {
         try {
-            File audioFile = new File(filePath);
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+            URL audioUrl = new URL(urlPath);
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioUrl);
             Clip clip = AudioSystem.getClip();
             clip.open(audioStream);
             clip.start();
@@ -141,8 +141,7 @@ public class main {
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Fullscreen
             frame.setVisible(true); // Show the window
         }
-        playMusic("https://github.com/LeBN/Gamies/raw/" +
-                "6c73e2c2216df9f27596bc9e29fc6d88c524424e/Assets/Music/PurpleHeart_Title.wav");
+        playMusic("https://github.com/LeBN/Gamies/raw/refs/heads/main/Assets/Music/PurpleHeart_Title.wav");
         limitFPS();
     }
 }

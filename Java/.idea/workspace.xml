@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8477a2bc-c96d-4a22-99a8-117d6085c459" name="Changes" comment="player">
-      <change beforePath="$PROJECT_DIR$/../Assets/Player/Nouveau Document texte.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Docs/Item_types.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Docs/Item_types.txt" afterDir="false" />
+    <list default="true" id="8477a2bc-c96d-4a22-99a8-117d6085c459" name="Changes" comment="music">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DbManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DbManagement.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Musics/Title Project/Title.als" beforeDir="false" afterPath="$PROJECT_DIR$/../Musics/Title Project/Title.als" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +97,7 @@
       <workItem from="1729718747232" duration="27507000" />
       <workItem from="1729747241931" duration="32808000" />
       <workItem from="1730133434856" duration="36000" />
-      <workItem from="1730442508346" duration="1189000" />
+      <workItem from="1730442508346" duration="1811000" />
     </task>
     <task id="LOCAL-00001" summary="Collision system">
       <option name="closed" value="true" />
@@ -167,7 +163,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729806126706</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="music">
+      <option name="closed" value="true" />
+      <created>1730443768418</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1730443768418</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -191,7 +195,8 @@
     <MESSAGE value="Game begin" />
     <MESSAGE value="mariaDB lib" />
     <MESSAGE value="player" />
-    <option name="LAST_COMMIT_MESSAGE" value="player" />
+    <MESSAGE value="music" />
+    <option name="LAST_COMMIT_MESSAGE" value="music" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
