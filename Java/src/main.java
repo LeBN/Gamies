@@ -7,6 +7,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.sound.sampled.*;
+import java.io.File;
+import java.io.IOException;
 
 public class main {
     private static boolean fullscreen;
@@ -64,6 +67,19 @@ public class main {
                 }
             }
             startTime = System.currentTimeMillis();
+        }
+    }
+
+    // Method to play a .wav file
+    public static void playMusic(String filePath) {
+        try {
+            File audioFile = new File(filePath);
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
         }
     }
 
@@ -125,6 +141,8 @@ public class main {
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Fullscreen
             frame.setVisible(true); // Show the window
         }
+        playMusic("https://github.com/LeBN/Gamies/raw/" +
+                "6c73e2c2216df9f27596bc9e29fc6d88c524424e/Assets/Music/PurpleHeart_Title.wav");
         limitFPS();
     }
 }

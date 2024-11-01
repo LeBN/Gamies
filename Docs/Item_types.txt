@@ -1,2 +1,3 @@
 (0, "Credit", "Credit is the unit of every unic transaction, wherever it is for a tunic, to make your way lit, not to finish in a pit or even going to New Munich, the credit will make you peak.", "https://raw.githubusercontent.com/LeBN/Gamies/main/Assets/Items/Coin.png", null)
-(1, "
+(5, "Balck box", "Look like an old version of a black box, hopefully, intact.", "https://raw.githubusercontent.com/LeBN/Gamies/main/Assets/Items/Crystal.png", 1)
+(8, "Wispering Heart Crystal", "You can feel this crystal wispering at you like a windines on your ear.", "https://raw.githubusercontent.com/LeBN/Gamies/main/Assets/Items/Crystal.png", 1)

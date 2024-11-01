@@ -4,10 +4,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DbManagement {
-    private static final String DB_URL = "jdbc:mariadb://localhost:3306/";
+    private static final String DB_URL = "jdbc:mariadb://localhost:3307/";
     private static final String DB_NAME = "Purple_Heart_DB";
     private static final String USER = "root";
-    private static final String PASS = "admin";
+    private static final String PASS = "LeBeNa2!";
 
     public static Connection connect() throws SQLException {
         return DriverManager.getConnection(DB_URL + DB_NAME, USER, PASS);
