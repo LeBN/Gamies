@@ -66,7 +66,7 @@ public class Main_Menu extends JPanel {
             optionsButton.setFont(buttonFont);
             optionsButton.setBounds((1920 - 825) / 2, 248, 825, 138);
             styleButton(optionsButton);
-            optionsButton.addActionListener(e -> switchToOptionsMenu());
+            optionsButton.addActionListener(e -> switchToOptionsMenu(frame));
             buttons[2] = optionsButton; // Add to the array
 
             // Create the Start Game button
@@ -209,7 +209,7 @@ public class Main_Menu extends JPanel {
     }
 
     // Options menu switch
-    private void switchToOptionsMenu() {
+    protected static void switchToOptionsMenu(JFrame frame) {
         frame.getContentPane().removeAll();
         Options_Menu options_menu = new Options_Menu(frame);
         frame.add(options_menu);

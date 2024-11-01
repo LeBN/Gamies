@@ -94,6 +94,7 @@ public class main {
     }
 
     public static void main(String[] args) {
+        playMusic("https://github.com/LeBN/Gamies/raw/refs/heads/main/Assets/Music/PurpleHeart_Title.wav");
         DbManagement.initializeDatabase(); // Ensure database is created
 
         // Debug: Print statement before loading options
@@ -141,7 +142,6 @@ public class main {
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Fullscreen
             frame.setVisible(true); // Show the window
         }
-        playMusic("https://github.com/LeBN/Gamies/raw/refs/heads/main/Assets/Music/PurpleHeart_Title.wav");
         limitFPS();
     }
 }

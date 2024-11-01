@@ -8,11 +8,11 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
 
 public class Collisions extends JPanel {
-    private double playerX = 1012, playerY = 646, playerRadius = 25;  // Circle player properties
+    protected double playerX = 1012, playerY = 646, playerRadius = 25;  // Circle player properties
     private List<Polygon> obstacles = new ArrayList<>();  // Obstacles list
     private int playerSpeed = 5;  // Player movement speed
-    private Vector2D playerMovement = new Vector2D(); // Player movement
-    private int up=0, down=0, left=0, right=0;
+    protected Vector2D playerMovement = new Vector2D(); // Player movement
+    protected int up=0, down=0, left=0, right=0;
     private int mouseX = 0; // Variable to store the mouse X position
     private int mouseY = 0; // Variable to store the mouse Y position
     private double friction = 0.75;
@@ -37,9 +37,9 @@ public class Collisions extends JPanel {
         ));*/
 
         obstacles.add(new Polygon(
-                new int[]{1009, 904, 1133, 1227},
-                new int[]{ 591, 535,  373,  473},
-                4
+                new int[]{1009, 915, 915, 1133, 1227},
+                new int[]{ 591, 549, 512,  373,  473},
+                5
         ));
 
         obstacles.add(new Polygon(
@@ -49,9 +49,9 @@ public class Collisions extends JPanel {
         ));
 
         obstacles.add(new Polygon(
-                new int[]{1307, 1228, 1464, 1574},
-                new int[]{ 756,  703,  524,  598},
-                4
+                new int[]{1310, 1228, 1228, 1464, 1574},
+                new int[]{779, 727, 703,  524,  598},
+                5
         ));
 
         if (main.showCollision) {
@@ -60,17 +60,6 @@ public class Collisions extends JPanel {
 
         // KeyListener to move the player
         setFocusable(true);
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                setPlayerMovement(e.getKeyCode(), true);
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                setPlayerMovement(e.getKeyCode(), false);
-            }
-        });
 
         // Mouse motion listener to track mouse movements
         addMouseMotionListener(new MouseMotionAdapter() {
@@ -95,21 +84,12 @@ public class Collisions extends JPanel {
         timer.start();
     }
 
-    // Set the movement direction for the player based on the key pressed
-    private void setPlayerMovement(int keyCode, boolean pressed) {
-        int movement = pressed ? playerSpeed : 0;
-
-        if (keyCode == KeyEvent.VK_UP) up = -movement;
-        if (keyCode == KeyEvent.VK_DOWN) down = movement;
-        if (keyCode == KeyEvent.VK_LEFT) left = -movement;
-        if (keyCode == KeyEvent.VK_RIGHT) right = movement;
-
-        playerMovement.x = right + left;
-        playerMovement.y = up + down;
+    public int getPlayerSpeed() {
+        return playerSpeed;
     }
 
     // Handle player movement and check for collisions
-    private void movePlayer() {
+    public void movePlayer() {
         // Store the collisions
         List<Polygon> collisions = new ArrayList<>();
         int numberOfCollisions = 0;
@@ -161,14 +141,16 @@ public class Collisions extends JPanel {
         }
 
         // Set color and font for displaying mouse position
-        g2d.setColor(Color.WHITE); // Set text color
-        g2d.setFont(new Font("Arial", Font.PLAIN, 50)); // Set font style and size
+        if (opacity != 0){
+            g2d.setColor(Color.WHITE); // Set text color
+            g2d.setFont(new Font("Arial", Font.PLAIN, 50)); // Set font style and size
 
-        // Draw the mouse position in the bottom right corner
-        String mousePositionText = "Mouse: (" + mouseX + ", " + mouseY + ")";
-        FontMetrics metrics = g2d.getFontMetrics();
-        int textWidth = metrics.stringWidth(mousePositionText);
-        g2d.drawString(mousePositionText, getWidth() - textWidth - 10, getHeight() - 10);
+            // Draw the mouse position in the bottom right corner
+            String mousePositionText = "Mouse: (" + mouseX + ", " + mouseY + ")";
+            FontMetrics metrics = g2d.getFontMetrics();
+            int textWidth = metrics.stringWidth(mousePositionText);
+            g2d.drawString(mousePositionText, getWidth() - textWidth - 10, getHeight() - 10);
+        }
     }
 
     // Resolve the collision by sliding the player along the surface

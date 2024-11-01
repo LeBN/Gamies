@@ -1,5 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.net.URL;
 
 public class Game extends JPanel {
@@ -9,7 +11,7 @@ public class Game extends JPanel {
     private Player player;
     private PauseMenu pauseMenu;
     private Collisions collisions;
-    private double playerX=1012, playerY=646;
+    public double playerX=1012, playerY=646;
 
     public Game(JFrame frame) {
         this.frame = frame;
@@ -37,7 +39,7 @@ public class Game extends JPanel {
             collisions.requestFocusInWindow();
         });
 
-        player = new Player(frame, playerX, playerY);
+        player = new Player(frame, playerX, playerY, collisions);
         player.setBounds(0, 0, width, height);
         frame.add(player);
         player.setFocusable(true);  // Make sure it can receive key events
@@ -47,8 +49,34 @@ public class Game extends JPanel {
 
         // Adding a delay to ensure the frame is visible before requesting focus
         SwingUtilities.invokeLater(() -> {
-            player.requestFocusInWindow();
+            requestFocusInWindow();
         });
+
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                setPlayerMovement(e.getKeyCode(), true);
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                setPlayerMovement(e.getKeyCode(), false);
+            }
+        });
+    }
+
+// Set the movement direction for the player based on the key pressed
+    private void setPlayerMovement(int keyCode, boolean pressed) {
+        int movement = pressed ? collisions.getPlayerSpeed() : 0;
+
+        if (keyCode == KeyEvent.VK_UP) collisions.up = -movement;
+        if (keyCode == KeyEvent.VK_DOWN) collisions.down = movement;
+        if (keyCode == KeyEvent.VK_LEFT) collisions.left = -movement;
+        if (keyCode == KeyEvent.VK_RIGHT) collisions.right = movement;
+        if (keyCode == KeyEvent.VK_ESCAPE) Main_Menu.switchToOptionsMenu(frame);
+
+        collisions.playerMovement.x = collisions.right + collisions.left;
+        collisions.playerMovement.y = collisions.up + collisions.down;
     }
 
     private class Level extends JPanel {
@@ -60,7 +88,7 @@ public class Game extends JPanel {
 
             // Attempt to load the background image
             try {
-                URL imgURL = new URL("https://github.com/LeBN/Gamies/raw/main/Assets/Levels/Level_0_0.png");
+                URL imgURL = new URL("https://github.com/LeBN/Gamies/blob/main/Assets/Levels/Level_0_0.png?raw=true");
                 bgImage = new ImageIcon(imgURL).getImage();
                 System.out.println("Image loaded successfully"); // Debugging message
             } catch (Exception e) {
