@@ -47,6 +47,10 @@ public class Game extends JPanel {
         player.repaint();
         player.requestFocusInWindow();
 
+        PlayerInterface playerInterface = new PlayerInterface(frame);
+        playerInterface.setBounds(0, 0, width, height);
+        frame.add(playerInterface);
+
         // Adding a delay to ensure the frame is visible before requesting focus
         SwingUtilities.invokeLater(() -> {
             requestFocusInWindow();

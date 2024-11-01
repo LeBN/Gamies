@@ -5,15 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8477a2bc-c96d-4a22-99a8-117d6085c459" name="Changes" comment="music">
-      <change beforePath="$PROJECT_DIR$/../Assets/Music/PurpleHeart_Title.wav" beforeDir="false" afterPath="$PROJECT_DIR$/../Assets/Music/PurpleHeart_Title.wav" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Assets/Music/PurpleHeart_Title.wav.asd" beforeDir="false" afterPath="$PROJECT_DIR$/../Assets/Music/PurpleHeart_Title.wav.asd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Collisions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Collisions.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Player.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PlayerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PlayerInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Vector2D.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vector2D.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Musics/Title Project/Title.als" beforeDir="false" afterPath="$PROJECT_DIR$/../Musics/Title Project/Title.als" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,6 +53,7 @@
     "Application.LoadingPage.executor": "Run",
     "Application.Main.executor": "Run",
     "Application.Player.executor": "Run",
+    "Application.PlayerInterface.executor": "Run",
     "Application.Start_Menu.executor": "Debug",
     "Application.main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -106,7 +101,7 @@
       <workItem from="1729747241931" duration="32808000" />
       <workItem from="1730133434856" duration="36000" />
       <workItem from="1730442508346" duration="6161000" />
-      <workItem from="1730448743164" duration="12834000" />
+      <workItem from="1730448743164" duration="15847000" />
     </task>
     <task id="LOCAL-00001" summary="Collision system">
       <option name="closed" value="true" />
